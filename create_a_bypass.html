@@ -8,8 +8,17 @@
     <title>Глвная | СКУД</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="./static/images/favicon.png">
-    <!-- Datatable -->
-    <link href="./static/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+    <!-- Daterange picker -->
+    <link href="./static/vendor/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <!-- Clockpicker -->
+    <link href="./static/vendor/clockpicker/css/bootstrap-clockpicker.min.css" rel="stylesheet">
+    <!-- asColorpicker -->
+    <link href="./static/vendor/jquery-asColorPicker/css/asColorPicker.min.css" rel="stylesheet">
+    <!-- Material color picker -->
+    <link href="./static/vendor/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet">
+    <!-- Pick date -->
+    <link rel="stylesheet" href="./static/vendor/pickadate/themes/default.css">
+    <link rel="stylesheet" href="./static/vendor/pickadate/themes/default.date.css">
     <!-- Custom Stylesheet -->
     <link href="./static/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
     <link href="./static/css/style.css" rel="stylesheet">
@@ -180,7 +189,8 @@
                     </div>
                     <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="javascript:void(0)">Главная</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0)">Настройки</a></li>
+                            <li class="breadcrumb-item active"><a href="javascript:void(0)">Создать обход</a></li>
                         </ol>
                     </div>
                 </div>
@@ -252,174 +262,54 @@
                     </div>
 	            </div>
 
-                <div class="row">
-                    
-					<div class="col-12">
+                <div class="col">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Таблица обходов</h4>
+                                <h4 class="card-title">Создание обхода</h4>
                             </div>
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <table id="example3" class="display" style="min-width: 845px">
-                                        <thead>
-                                            <tr>
-                                                <th>Имя охраника</th>
-                                                <th>Название ЧОП</th>
-                                                <th>Название объекта</th>
-                                                <th>Название метки</th>
-                                                <th>Статус</th>
-                                                <th>Дата обхода</th>
-                                                <th>Действие</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>Tiger Nixon</td>
-                                                <td>Architect</td>
-                                                <td>FJBH</td>
-                                                <td>M.COM.</td>
-                                                <td><span class="badge light badge-warning">Проход</span></td>
-                                                <td>2011/04/25</td>
-                                                <td>
-													<div class="d-flex">
-														<a href="#" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-													</div>												
-												</td>												
-                                            </tr>
-                                            <tr>
-                                                <td>Garrett Winters</td>
-                                                <td>Accountant</td>
-                                                <td>DFS</td>
-                                                <td>M.COM.</td>
-                                                <td><span class="badge light badge-success">Пройдена</span></td>
-                                                <td>2011/07/25</td>
-                                                <td>
-													<div class="d-flex">
-														<a href="#" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-														<a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-													</div>
-												</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Ashton Cox</td>
-                                                <td>Junior Technical</td>
-                                                <td>SDF</td>
-                                                <td>B.COM.</td>
-                                                <td><span class="badge light badge-success">Пройдена</span></td>
-                                                <td>2009/01/12</td>
-												<td>
-													<div class="d-flex">
-														<a href="#" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-														<a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-													</div>
-												</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Cedric Kelly</td>
-                                                <td>Developer</td>
-                                                <td>csD</td>
-												<td>B.COM.</td>
-                                                <td><span class="badge light badge-success">Пройдена</span></td>
-                                                <td>2012/03/29</td>
-                                                <td>
-													<div class="d-flex">
-														<a href="#" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-														<a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-													</div>
-												</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Airi Satou</td>
-                                                <td>Accountant</td>
-                                                <td>WER</td>
-												<td>B.A</td>
-                                                <td><span class="badge light badge-success">Пройдена</span></td>
-                                                <td>2008/11/28</td>
-                                                <td>
-													<div class="d-flex">
-														<a href="#" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-														<a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-													</div>
-												</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Brielle Williamson</td>
-                                                <td>Specialist</td>
-                                                <td>WEV</td>
-												<td>B.COM.</td>
-                                                <td><span class="badge light badge-success">Пройдена</span></td>
-                                                <td>2012/12/02</td>
-												<td>
-													<div class="d-flex">
-														<a href="#" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-														<a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-													</div>
-												</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Herrod Chandler</td>
-                                                <td>Sales Assistant</td>
-                                                <td>sFjhjH</td>
-												<td>B.C.A</td>
-                                                <td><span class="badge light badge-success">Пройдена</span></td>
-                                                <td>2012/08/06</td>
-                                                <td>
-													<div class="d-flex">
-														<a href="#" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-														<a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-													</div>
-												</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Rhona Davidson</td>
-                                                <td>Integration</td>
-                                                <td>OOOKO</td>
-												<td>B.TACH</td>
-                                                <td><span class="badge light badge-success">Пройдена</span></td>
-                                                <td>2010/10/14</td>
-                                                <td>
-													<div class="d-flex">
-														<a href="#" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-														<a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-													</div>
-												</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Colleen Hurst</td>
-                                                <td>Javascript Developer</td>
-                                                <td>Hooli</td>
-												<td>B.C.A</td>
-                                                <td><span class="badge light badge-success">Пройдена</span></td>
-                                                <td>2009/09/15</td>
-                                                <td>
-													<div class="d-flex">
-														<a href="#" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-														<a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-													</div>
-												</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Sonya Frost</td>
-                                                <td>Software Engineer</td>
-                                                <td>sdf</td>
-												<td>M.COM.</td>
-                                                <td><span class="badge light badge-success">Пройдена</span></td>
-                                                <td>2008/12/13</td>
-                                                <td>
-													<div class="d-flex">
-														<a href="#" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-pencil"></i></a>
-														<a href="#" class="btn btn-danger shadow btn-xs sharp"><i class="fa fa-trash"></i></a>
-													</div>
-												</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="basic-form">
+                                    <form>
+                                        <div class="form-group">
+                                            <p class="mb-1">Название обхода</p>
+                                            <input type="text" class="form-control input-default " placeholder="Название обхода">
+                                        </div>
+
+                                        <div class="form-group">
+                                            <p class="mb-1">Дата и время обхода</p>
+                                            <input type="text" class="form-control input-daterange-timepicker" name="daterange" value="01/01/2021 1:30 PM - 01/01/2021 2:00 PM">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>NFC метки обхода</label>
+                                            <select multiple class="form-control" id="sel2">
+                                                <option>1</option>
+                                                <option>2</option>
+                                                <option>3</option>
+                                                <option>4</option>
+                                                <option>5</option>
+                                                <option>6</option>
+                                                <option>7</option>
+                                                <option>8</option>
+                                                <option>9</option>
+                                                <option>10</option>
+                                                <option>11</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Охраник на обход</label>
+                                            <select class="form-control" id="sel1">
+                                                <option>Блинов Макар Сергеевич</option>
+                                                <option>Львов Савва Матвеевич</option>
+                                                <option>Морозов Александр Павлович</option>
+                                                <option>Голубев Александр Вадимович</option>
+                                            </select>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
                     </div>
-				</div>
+
             </div>
         </div>
         <!--**********************************
@@ -458,13 +348,44 @@
     ***********************************-->
     <!-- Required vendors -->
     <script src="./static/vendor/global/global.min.js"></script>
-	<script src="./static/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="./static/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="./static/vendor/chart.js/Chart.bundle.min.js"></script>
     <script src="./static/js/custom.min.js"></script>
-	<script src="./static/js/deznav-init.js"></script>
-	
-    <!-- Datatable -->
-    <script src="./static/vendor/datatables/js/jquery.dataTables.min.js"></script>
-    <script src="./static/js/plugins-init/datatables.init.js"></script>
+    <script src="./static/js/deznav-init.js"></script>
+    <!-- Apex Chart -->
+    <script src="./static/vendor/apexchart/apexchart.js"></script>
+    
+
+
+    <!-- Daterangepicker -->
+    <!-- momment js is must -->
+    <script src="./static/vendor/moment/moment.min.js"></script>
+    <script src="./static/vendor/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <!-- clockpicker -->
+    <script src="./static/vendor/clockpicker/js/bootstrap-clockpicker.min.js"></script>
+    <!-- asColorPicker -->
+    <script src="./static/vendor/jquery-asColor/jquery-asColor.min.js"></script>
+    <script src="./static/vendor/jquery-asGradient/jquery-asGradient.min.js"></script>
+    <script src="./static/vendor/jquery-asColorPicker/js/jquery-asColorPicker.min.js"></script>
+    <!-- Material color picker -->
+    <script src="./static/vendor/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+    <!-- pickdate -->
+    <script src="./static/vendor/pickadate/picker.js"></script>
+    <script src="./static/vendor/pickadate/picker.time.js"></script>
+    <script src="./static/vendor/pickadate/picker.date.js"></script>
+
+
+
+    <!-- Daterangepicker -->
+    <script src="./static/js/plugins-init/bs-daterange-picker-init.js"></script>
+    <!-- Clockpicker init -->
+    <script src="./static/js/plugins-init/clock-picker-init.js"></script>
+    <!-- asColorPicker init -->
+    <script src="./static/js/plugins-init/jquery-asColorPicker.init.js"></script>
+    <!-- Material color picker init -->
+    <script src="./static/js/plugins-init/material-date-picker-init.js"></script>
+    <!-- Pickdate -->
+    <script src="./static/js/plugins-init/pickadate-init.js"></script>
 
 </body>
 </html>
