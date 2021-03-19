@@ -1,5 +1,4 @@
 import flask
-from apievents.login import Login
 from mysql.connector import connect
 import os
 import dotenv
@@ -15,26 +14,24 @@ config = {
 }
 
 mysqldb = connect(**config)
-APIDict = {"auth": Login}
-
-app = flask.Flask("AccesControlSystem")
+cursor = mysqldb.cursor()
+app = flask.Flask("AccesControlSystem", template_folder='frontend', static_folder="static")
 CORS(app)
-"""
-Request structure
-{
-    "name": "<ApiClassName>",
-    "data":{
-        <DataForApi>
-    }
-}
-"""
-@app.route('/api', methods=["POST"])
-def api():
-    reqjson = flask.request.json
-    try:
-        return flask.jsonify(APIDict[reqjson["name"]].onRequest(reqjson['data'], mysqldb))
-    except KeyError:
-        return flask.jsonify({"error": 0})
+
+@app.route('/login', methods=["GET", "POST"])
+@app.route('/login.html', methods=["GET", "POST"])
+def login():
+    mysqldb.reconnect()
+    if flask.request.method == "POST":
+        cursor.execute("SELECT * FROM users WHERE login = %s AND password = %s", (flask.request.form.get('login'), flask.request.form.get('pass')))
+        user = cursor.fetchone()
+        print(user)
+    return flask.render_template("login.html")
+
+
+@app.route('/assets/<path:path>')
+def send_asset(path):
+    return flask.send_from_directory("./frontend/assets/", path)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8074, debug=True)
