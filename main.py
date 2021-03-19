@@ -3,6 +3,7 @@ from apievents.login import Login
 from mysql.connector import connect
 import os
 import dotenv
+from flask_cors import CORS
 
 dotenv.load_dotenv()
 config = {
@@ -17,6 +18,7 @@ mysqldb = connect(**config)
 APIDict = {"auth": Login}
 
 app = flask.Flask("AccesControlSystem")
+CORS(app)
 """
 Request structure
 {
