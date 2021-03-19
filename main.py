@@ -37,12 +37,13 @@ def login():
     if flask.request.method == "POST":
         cursor.execute("SELECT * FROM users WHERE login = %s AND password = %s", (flask.request.form.get('login'), flask.request.form.get('pass')))
         user = cursor.fetchone()
-        user_token = uuid.uuid1()
-        cursor.execute("UPDATE users SET token = %s WHERE id = %s", (user_token.hex, user[0]))
-        mysqldb.commit()
-        res = flask.redirect('/')
-        res.set_cookie('token', bytes(user_token.hex.encode()), max_age=60*60*24*365*5)
-        return res
+        if not user:
+            user_token = uuid.uuid1()
+            cursor.execute("UPDATE users SET token = %s WHERE id = %s", (user_token.hex, user[0]))
+            mysqldb.commit()
+            res = flask.redirect('/')
+            res.set_cookie('token', bytes(user_token.hex.encode()), max_age=60*60*24*365*5)
+            return res
     return flask.render_template("login.html")
 
 
