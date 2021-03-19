@@ -15,8 +15,13 @@ config = {
 
 mysqldb = connect(**config)
 cursor = mysqldb.cursor()
-app = flask.Flask("AccesControlSystem", template_folder='frontend', static_folder="static")
+app = flask.Flask("AccesControlSystem", static_folder='', template_folder='frontend')
 CORS(app)
+
+@app.route('/login', methods=["GET", "POST"])
+@app.route('/login.html', methods=["GET", "POST"])
+def index():
+    pass
 
 @app.route('/login', methods=["GET", "POST"])
 @app.route('/login.html', methods=["GET", "POST"])
@@ -29,9 +34,7 @@ def login():
     return flask.render_template("login.html")
 
 
-@app.route('/assets/<path:path>')
-def send_asset(path):
-    return flask.send_from_directory("./frontend/assets/", path)
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8074, debug=True)
