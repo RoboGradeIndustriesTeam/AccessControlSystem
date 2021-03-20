@@ -11,8 +11,10 @@
     <!-- Datatable -->
     <link href="./static/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
     <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="./static/vendor/select2/css/select2.min.css">
     <link href="./static/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
     <link href="./static/css/style.css" rel="stylesheet">
+
     <script src="https://kit.fontawesome.com/672e8de7e1.js" crossorigin="anonymous"></script>
 
 
@@ -305,7 +307,10 @@
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Владелец ЧОП</label>
-                                                    <input type="text" class="form-control input-default " placeholder="Владелец ЧОП">
+                                                    <select id="single-select">
+                                                        <option value="AL">Иванов Петр Петрович</option>
+                                                        <option value="WY">огравгшцрщша</option>
+                                                    </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="row">
@@ -385,6 +390,11 @@
 
     <script src="./static/vendor/highlightjs/highlight.pack.min.js"></script>
     <!-- Circle progress -->
+
+    <script src="./static/vendor/chart.js/Chart.bundle.min.js"></script>    
+
+    <script src="./static/vendor/select2/js/select2.full.min.js"></script>
+    <script src="./static/js/plugins-init/select2-init.js"></script>
 
 </body>
 </html>
