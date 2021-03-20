@@ -168,9 +168,10 @@ def user():
     if flask.request.method == "POST":
         ftyp = flask.request.form.get("form-type")
 
-        if ftyp.startswith("addUser"):
+        if ftyp == "addUser":
+            print("ASs")
             if (flask.request.form.get("user_name"),) in User(mysqldb).SELECT("login", oneOrAll=True):
-                Object(mysqldb).F
+                pass
                 
     return flask.render_template('users.html', user=user, user_role=user_role, userAnalitycs=[taskslen, objectsLen, secs, nfcAccs], users=users)
 
