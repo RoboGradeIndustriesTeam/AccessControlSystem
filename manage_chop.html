@@ -5,26 +5,14 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Создать обход | КАТРАН</title>
+    <title>Управления ЧОПами | КАТРАН</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="./static/images/favicon.png">
-    <!-- Daterange picker -->
-    <link rel="stylesheet" href="./static/vendor/select2/css/select2.min.css">
-    <link href="./static/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
-    <link href="./static/css/style.css" rel="stylesheet">
-    <!-- Daterange picker -->
-    <link href="./static/vendor/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
-    <!-- Clockpicker -->
-    <link href="./static/vendor/clockpicker/css/bootstrap-clockpicker.min.css" rel="stylesheet">
-    <!-- asColorpicker -->
-    <link href="./static/vendor/jquery-asColorPicker/css/asColorPicker.min.css" rel="stylesheet">
-    <!-- Material color picker -->
-    <link href="./static/vendor/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet">
-    <!-- Pick date -->
-    <link rel="stylesheet" href="./static/vendor/pickadate/themes/default.css">
-    <link rel="stylesheet" href="./static/vendor/pickadate/themes/default.date.css">
+    <!-- Datatable -->
+    <link href="./static/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
     <!-- Custom Stylesheet -->
     <link href="./static/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="./static/css/style.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/672e8de7e1.js" crossorigin="anonymous"></script>
 
 
@@ -93,7 +81,7 @@
                             <li class="nav-item dropdown header-profile">
                                 <a class="nav-link" href="#" role="button" data-toggle="dropdown">
 									<div class="header-info">
-										<span>Привет, <strong>{имя}</strong></span>
+										<span>Привет, <strong>Иван Петрович</strong></span>
 									</div>
                                     <img src="./static/images/profile/pic1.jpg" width="20" alt=""/>
                                 </a>
@@ -193,7 +181,8 @@
                     <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="javascript:void(0)">Настройки</a></li>
-                            <li class="breadcrumb-item active"><a href="javascript:void(0)">Создать обход</a></li>
+                            <li class="breadcrumb-item active"><a href="javascript:void(0)">Управление ЧОПами</a></li>
+
                         </ol>
                     </div>
                 </div>
@@ -264,46 +253,85 @@
 						</div>
                     </div>
 	            </div>
+
                 <div class="row">
                     <div class="col">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Создание обхода</h4>
+                                <h4 class="card-title">Управление ЧОПами</h4>
+                                <button type="button" class="btn btn-rounded btn-info" data-toggle="modal" data-target="#exampleModalCenter"><span class="btn-icon-left text-info"><i class="fa fa-plus color-info"></i>
+                                </span>Новое ЧОП</button>
                             </div>
                             <div class="card-body">
-                                <div class="basic-form">
+                                <div class="table-responsive">
+                                    <table id="example5" class="display mb-4 dataTablesCard" style="min-width: 845px;">
+                                        <thead>
+                                            <tr>
+                                                <th>Номер предприятия</th>
+                                                <th>Дата регистрации предприятия</th>
+                                                <th>Владелец</th>
+                                                <th>Город</th>
+                                                <th>Примечание</th>
+                                                <th>Статус</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>#4546563</td>
+                                                <td>11.23.2020</td>
+                                                <td>Иван Иваныч</td>
+                                                <td>Лондон(город)</td>
+                                                <td>Статус</td>
+                                                <td><span class="btn btn-sm light btn-warning fs-16">Статус</span></td>
+                                                <td>
+                                                    <div class="dropdown ml-auto text-right">
+                                                        <div class="btn-link" data-toggle="modal" data-target="#exampleModalCenter">
+                                                            <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
+                                                        </div>
+                                                    </div>
+                                                </td>                                               
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                            <!-- Modal -->
+                        <div class="modal fade" id="exampleModalCenter">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
                                     <form>
-                                        <div class="form-group">
-                                            <p class="mb-1">Название обхода</p>
-                                            <input type="text" class="form-control input-default " placeholder="Название обхода">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Настройки ЧОП</h5>
+                                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                                         </div>
-
-                                        <div class="form-group">
-                                            <p class="mb-1">Дата и время обхода</p>
-                                            <input type="text" class="form-control input-daterange-timepicker" name="daterange" value="01/01/2021 1:30 PM - 01/01/2021 2:00 PM">
+                                        <div class="modal-body">
+                                            <div class="basic-form">
+                                                <div class="form-group">
+                                                    <label>Название ЧОП</label>
+                                                    <input type="text" class="form-control input-default " placeholder="Название ЧОП">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Город ЧОП</label>
+                                                    <input type="text" class="form-control input-default " placeholder="Город ЧОП">
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="custom-control custom-checkbox mb-3 checkbox-warning">
+                                                                <input type="checkbox" class="custom-control-input" checked="" id="customCheckBox3" required="">
+                                                                <label class="custom-control-label" for="customCheckBox3"> Работа ЧОП</label>
+                                                                <p>(Флажок включен - ЧОП работает)</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label>NFC метки обхода</label>
-                                            <select style="height: 42px" class="multi-select" name="states[]" multiple="multiple">
-                                                <option value="AL">1</option>
-                                                <option value="WY">2</option>
-                                                <option value="UI">3</option>
-                                                <option value="UI">4</option>
-                                                <option value="UI">5</option>
-                                                <option value="UI">6</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <label>Охраник на обход</label>
-                                            <select id="dynamic-option-creation">
-                                                <option>Блинов Макар Сергеевич</option>
-                                                <option>Львов Савва Матвеевич</option>
-                                                <option>Морозов Александр Павлович</option>
-                                                <option>Голубев Александр Вадимович</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group">
-                                            <button type="button" class="btn btn-success">Создать</button>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger light" data-dismiss="modal">Закрыть</button>
+                                            <button type="button" class="btn btn-primary">Сохранить</button>
                                         </div>
                                     </form>
                                 </div>
@@ -311,6 +339,8 @@
                         </div>
                     </div>
                 </div>
+                </div>
+                
             </div>
         </div>
         <!--**********************************
@@ -349,48 +379,21 @@
     ***********************************-->
     <!-- Required vendors -->
     <script src="./static/vendor/global/global.min.js"></script>
-    <script src="./static/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
-    <script src="./static/vendor/chart.js/Chart.bundle.min.js"></script>
+	<script src="./static/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
     <script src="./static/js/custom.min.js"></script>
-    <script src="./static/js/deznav-init.js"></script>
-    <!-- Apex Chart -->
-    <script src="./static/vendor/apexchart/apexchart.js"></script>
-    
+	<script src="./static/js/deznav-init.js"></script>
+	
+    <!-- Datatable -->
+    <script src="./static/vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="./static/js/plugins-init/datatables.init.js"></script>
 
-    <script src="./static/vendor/select2/js/select2.full.min.js"></script>
-    <script src="./static/js/plugins-init/select2-init.js"></script>
-    
+    <!-- Required vendors -->
+    <script src="./static/vendor/chart.js/Chart.bundle.min.js"></script>
+	<!-- Apex Chart -->
+	<script src="./static/vendor/apexchart/apexchart.js"></script>
 
-
-    <!-- Daterangepicker -->
-    <!-- momment js is must -->
-    <script src="./static/vendor/moment/moment.min.js"></script>
-    <script src="./static/vendor/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <!-- clockpicker -->
-    <script src="./static/vendor/clockpicker/js/bootstrap-clockpicker.min.js"></script>
-    <!-- asColorPicker -->
-    <script src="./static/vendor/jquery-asColor/jquery-asColor.min.js"></script>
-    <script src="./static/vendor/jquery-asGradient/jquery-asGradient.min.js"></script>
-    <script src="./static/vendor/jquery-asColorPicker/js/jquery-asColorPicker.min.js"></script>
-    <!-- Material color picker -->
-    <script src="./static/vendor/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
-    <!-- pickdate -->
-    <script src="./static/vendor/pickadate/picker.js"></script>
-    <script src="./static/vendor/pickadate/picker.time.js"></script>
-    <script src="./static/vendor/pickadate/picker.date.js"></script>
-
-
-
-    <!-- Daterangepicker -->
-    <script src="./static/js/plugins-init/bs-daterange-picker-init.js"></script>
-    <!-- Clockpicker init -->
-    <script src="./static/js/plugins-init/clock-picker-init.js"></script>
-    <!-- asColorPicker init -->
-    <script src="./static/js/plugins-init/jquery-asColorPicker.init.js"></script>
-    <!-- Material color picker init -->
-    <script src="./static/js/plugins-init/material-date-picker-init.js"></script>
-    <!-- Pickdate -->
-    <script src="./static/js/plugins-init/pickadate-init.js"></script>
+    <script src="./static/vendor/highlightjs/highlight.pack.min.js"></script>
+    <!-- Circle progress -->
 
 </body>
 </html>
