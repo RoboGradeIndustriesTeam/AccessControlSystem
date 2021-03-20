@@ -167,6 +167,14 @@ def user():
             taskslen += tasksinprojects
     if not user:
         return flask.redirect('login.html')
+
+    if flask.request.method == "POST":
+        ftyp = flask.request.form.get("form-type")
+
+        if ftyp.startswith("addUser"):
+            if (flask.request.form.get("user_name"),) in User(mysqldb).SELECT("login", oneOrAll=True):
+                Object(mysqldb)
+                
     return flask.render_template('users.html', user=user, user_role=user_role, userAnalitycs=[taskslen, objectsLen, secs, nfcAccs], users=users)
 
 def getUserRole(userID):
@@ -179,4 +187,4 @@ def getUserRole(userID):
 app.jinja_env.globals.update(len=len, User=User, Role=Role, RoleAssign=RoleAssign, NFCAcc=NFCAcc, Task=Task, Object=Object, ObjectSec=ObjectSec, mysqldb=mysqldb, getUserRole=getUserRole)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=8074, debug=True)
+    app.run(host='0.0.0.0', port=80, debug=True)

@@ -265,10 +265,10 @@
                                             <tr>
                                                 <td>{{ i[0] }}</td>
                                                 <td>{{ i[1] }}</td>
-                                                <td><span class="btn btn-sm light btn-success fs-16">{{ getUserRole(i[0]) }}</span></td>
+                                                <td><span class="btn btn-sm light btn-success fs-16">{{ getUserRole(i[0]).roleName }}</span></td>
                                                 <td>
                                                     <div class="dropdown ml-auto text-right">
-                                                        <div class="btn-link" data-toggle="modal" data-target="#exampleModalCenter1">
+                                                        <div class="btn-link" data-toggle="modal" data-target="#user_{{ i[0] }}">
                                                             <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
                                                         </div>
                                                     </div>
@@ -281,7 +281,8 @@
                             </div>
                         </div>
                             <!-- Modal -->
-                            <div class="modal fade" id="exampleModalCenter1">
+                            {% for i in users %}
+                            <div class="modal fade" id="user_{{ i[0] }}">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <form>
@@ -291,13 +292,10 @@
                                             </div>
                                             <div class="modal-body">
                                                 <div class="basic-form">
+                                                    <input type="hidden" name="form-type" value="changeUser_{{ i[0] }}">
                                                     <div class="form-group">
                                                         <label>Имя пользователя</label>
-                                                        <input type="text" class="form-control input-default " placeholder="Имя пользователя">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Город</label>
-                                                        <input type="text" class="form-control input-default " placeholder="Город пользователя">
+                                                        <input type="text" class="form-control input-default " placeholder="{{ i[1] }}">
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Статус</label>
@@ -330,27 +328,25 @@
                                     </div>
                                 </div>
                             </div>
+                        {% endfor %}
                         <div class="modal fade" id="exampleModalCenter">
                             <div class="modal-dialog modal-dialog-centered" role="document">
                                 <div class="modal-content">
-                                    <form>
+                                    <form method="POST">
                                         <div class="modal-header">
                                             <h5 class="modal-title">Добавить пользователя</h5>
                                             <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                                         </div>
                                         <div class="modal-body">
+                                            <input type="hidden" name="form-type" value="addUser">
                                             <div class="basic-form">
                                                 <div class="form-group">
                                                     <label>Имя пользователя</label>
-                                                    <input type="text" class="form-control input-default " placeholder="Имя пользователя">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Город</label>
-                                                    <input type="text" class="form-control input-default " placeholder="Город пользователя">
+                                                    <input name="user_name" type="text" class="form-control input-default " placeholder="Имя пользователя">
                                                 </div>
                                                 <div class="form-group">
                                                     <label>Статус</label>
-                                                    <select id="single-select">
+                                                    <select name="user_role" id="single-select">
                                                         {% if user_role.isAdmin == 1 %}
                                                         <option value="0">Администратор</option>
                                                         <option value="1">Начальник охраны</option>
@@ -373,7 +369,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-danger light" data-dismiss="modal">Закрыть</button>
-                                            <button type="button" class="btn btn-primary">Сохранить</button>
+                                            <button type="submit" class="btn btn-primary">Сохранить</button>
                                         </div>
                                     </form>
                                 </div>
