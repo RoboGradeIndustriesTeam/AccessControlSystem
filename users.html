@@ -5,14 +5,15 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Управления ЧОПами | КАТРАН</title>
+    <title>Управления пользователями | КАТРАН</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="./static/images/favicon.png">
     <!-- Datatable -->
     <link href="./static/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
-    <!-- Custom Stylesheet -->
-    <link href="./static/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./static/vendor/select2/css/select2.min.css">
+    	<link href="./static/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
     <link href="./static/css/style.css" rel="stylesheet">
+
     <script src="https://kit.fontawesome.com/672e8de7e1.js" crossorigin="anonymous"></script>
 
 
@@ -112,7 +113,7 @@
 							<span class="nav-text">Главная</span>
 						</a>
                     </li>
-                    <li><a class="ai-icon" href="users.html" aria-expanded="false">
+                    <li><a class="ai-icon" href="1.html" aria-expanded="false">
 							<i class="fas fa-circle-notch"></i>
 							<span class="nav-text">Обходы</span>
 						</a>
@@ -122,12 +123,12 @@
 							<span class="nav-text">Пользователи</span>
 						</a>
                     </li>
-                    <li><a class="ai-icon" href="users.html" aria-expanded="false">
+                    <li><a class="ai-icon" href="2.html" aria-expanded="false">
 							<i class="fas fa-city"></i>
 							<span class="nav-text">Объекты</span>
 						</a>
                     </li>
-                    <li><a class="ai-icon" href="users.html" aria-expanded="false">
+                    <li><a class="ai-icon" href="3.html" aria-expanded="false">
 							<i class="fas fa-dot-circle"></i>
 							<span class="nav-text">NFC Метки</span>
 						</a>
@@ -146,7 +147,7 @@
 
 
 				<div class="copyright">
-					<p><strong>Панель администратора КАТРАН</strong><br> © R.G.I.T 2021</p>
+					<p><strong>Панель администратора | КАТРАН</strong><br> © R.G.I.T 2021</p>
 				</div>
 			</div>
         </div>
@@ -245,19 +246,17 @@
                     <div class="col">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Управление ЧОПами</h4>
+                                <h4 class="card-title">Управление пользователями</h4>
                                 <button type="button" class="btn btn-rounded btn-info" data-toggle="modal" data-target="#exampleModalCenter"><span class="btn-icon-left text-info"><i class="fa fa-plus color-info"></i>
-                                </span>Новое ЧОП</button>
+                                </span>Новый пользователь</button>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table id="example5" class="display mb-4 dataTablesCard" style="min-width: 845px;">
                                         <thead>
                                             <tr>
-                                                <th>Номер предприятия</th>
-                                                <th>Название</th>
-                                                <th>Дата регистрации предприятия</th>
-                                                <th>Владелец</th>
+                                                <th>Номер<br>пользователя</th>
+                                                <th>Ф.И.О.</th>
                                                 <th>Город</th>
                                                 <th>Статус</th>
                                                 <th></th>
@@ -266,11 +265,9 @@
                                         <tbody>
                                             <tr>
                                                 <td>#1</td>
-                                                <td>одло</td>
-                                                <td>01.01.3022</td>
-                                                <td>Иван Иваныч</td>
+                                                <td>Иванов Иван Петрович</td>
                                                 <td>Лондон</td>
-                                                <td><span class="btn btn-sm light btn-warning fs-16">Статус</span></td>
+                                                <td><span class="btn btn-sm light btn-success fs-16">Администратор</span></td>
                                                 <td>
                                                     <div class="dropdown ml-auto text-right">
                                                         <div class="btn-link" data-toggle="modal" data-target="#exampleModalCenter">
@@ -290,30 +287,34 @@
                                 <div class="modal-content">
                                     <form>
                                         <div class="modal-header">
-                                            <h5 class="modal-title">Настройки ЧОП</h5>
+                                            <h5 class="modal-title">Настройки пользователя</h5>
                                             <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
                                         </div>
                                         <div class="modal-body">
                                             <div class="basic-form">
                                                 <div class="form-group">
-                                                    <label>Название ЧОП</label>
-                                                    <input type="text" class="form-control input-default " placeholder="Название ЧОП">
+                                                    <label>Имя пользователя</label>
+                                                    <input type="text" class="form-control input-default " placeholder="Имя пользователя">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>Город ЧОП</label>
-                                                    <input type="text" class="form-control input-default " placeholder="Город ЧОП">
+                                                    <label>Город</label>
+                                                    <input type="text" class="form-control input-default " placeholder="Город пользователя">
                                                 </div>
                                                 <div class="form-group">
-                                                    <label>Владелец ЧОП</label>
-                                                    <input type="text" class="form-control input-default " placeholder="Владелец ЧОП">
+                                                    <label>Статус</label>
+                                                    <select id="single-select">
+                                                        <option value="AL">Администратор</option>
+                                                        <option value="WY">Начальник охраны</option>
+                                                        <option value="WY">Охранник</option>
+                                                    </select>
                                                 </div>
                                                 <div class="form-group">
                                                     <div class="row">
                                                         <div class="col">
                                                             <div class="custom-control custom-checkbox mb-3 checkbox-warning">
                                                                 <input type="checkbox" class="custom-control-input" checked="" id="customCheckBox3" required="">
-                                                                <label class="custom-control-label" for="customCheckBox3"> Работа ЧОП</label>
-                                                                <p>(Флажок включен - ЧОП работает)</p>
+                                                                <label class="custom-control-label" for="customCheckBox3"> Работа пользователя</label>
+                                                                <p>(Флажок включен - пользователь работает)</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -371,6 +372,7 @@
     <!-- Required vendors -->
     <script src="./static/vendor/global/global.min.js"></script>
 	<script src="./static/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="./static/vendor/chart.js/Chart.bundle.min.js"></script>
     <script src="./static/js/custom.min.js"></script>
 	<script src="./static/js/deznav-init.js"></script>
 	
@@ -385,6 +387,9 @@
 
     <script src="./static/vendor/highlightjs/highlight.pack.min.js"></script>
     <!-- Circle progress -->
+
+    <script src="./static/vendor/select2/js/select2.full.min.js"></script>
+    <script src="./static/js/plugins-init/select2-init.js"></script>
 
 </body>
 </html>
