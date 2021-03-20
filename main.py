@@ -93,13 +93,16 @@ def crBypass():
     user_role = Role(mysqldb)
     user_role.fetchBy(user_role.SELECT("*", f"WHERE id = {roleID[0]}"))
     objects = Object(mysqldb).SELECT("*", f"WHERE userOrgID = {user.id}", True)
+    nfces = []
     nfcAccs = 0
     objectsLen = 0
     secs = 0
     taskslen = 0
     if objects:
         for i in objects:
-            nfcaccsinobject = len(NFCAcc(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True))
+            nfc = NFCAcc(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True)
+            nfces.extend(nfc)
+            nfcaccsinobject = len(nfc)
             nfcAccs += nfcaccsinobject
         objectsLen = len(objects)
         for i in objects:
@@ -108,7 +111,10 @@ def crBypass():
         for i in objects:
             tasksinprojects = len(Task(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True))
             taskslen += tasksinprojects
-    return flask.render_template('create_a_bypass.html', user=user, user_role=user_role, userAnalitycs=[taskslen, objectsLen, secs, nfcAccs])
+    
+
+    
+    return flask.render_template('create_a_bypass.html', user=user, user_role=user_role, userAnalitycs=[taskslen, objectsLen, secs, nfcAccs], nfces=nfces)
 app.jinja_env.globals.update(len=len, User=User, Role=Role, RoleAssign=RoleAssign, NFCAcc=NFCAcc, Task=Task, Object=Object, ObjectSec=ObjectSec, mysqldb=mysqldb)
 
 if __name__ == "__main__":
