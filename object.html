@@ -5,14 +5,27 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Глвная | КАТРАН</title>
+    <title>Объекты | КАТРАН</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="./static/images/favicon.png">
     <!-- Datatable -->
     <link href="./static/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
-    <!-- Custom Stylesheet -->
+    <link rel="stylesheet" href="./static/vendor/select2/css/select2.min.css">
     <link href="./static/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
     <link href="./static/css/style.css" rel="stylesheet">
+
+    <!-- Daterange picker -->
+    <link href="./static/vendor/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+    <!-- Clockpicker -->
+    <link href="./static/vendor/clockpicker/css/bootstrap-clockpicker.min.css" rel="stylesheet">
+    <!-- asColorpicker -->
+    <link href="./static/vendor/jquery-asColorPicker/css/asColorPicker.min.css" rel="stylesheet">
+    <!-- Material color picker -->
+    <link href="./static/vendor/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css" rel="stylesheet">
+    <!-- Pick date -->
+    <link rel="stylesheet" href="./static/vendor/pickadate/themes/default.css">
+    <link rel="stylesheet" href="./static/vendor/pickadate/themes/default.date.css">
+    
     <script src="https://kit.fontawesome.com/672e8de7e1.js" crossorigin="anonymous"></script>
 
 
@@ -146,7 +159,7 @@
 
 
 				<div class="copyright">
-					<p><strong>Панель администратора КАТРАН</strong><br> © R.G.I.T 2021</p>
+					<p><strong>Панель администратора | КАТРАН</strong><br> © R.G.I.T 2021</p>
 				</div>
 			</div>
         </div>
@@ -167,7 +180,7 @@
                     </div>
                     <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="javascript:void(0)">Главная</a></li>
+                            <li class="breadcrumb-item"><a href="javascript:void(0)">Объекты</a></li>
                         </ol>
                     </div>
                 </div>
@@ -240,144 +253,112 @@
 	            </div>
 
                 <div class="row">
-					<!-- <div class="col">
+                    <div class="col">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">Вход</h4>
+                                <h4 class="card-title">Объекты</h4>
+                                <button type="button" class="btn btn-rounded btn-info" data-toggle="modal" data-target="#exampleModalCenter"><span class="btn-icon-left text-info"><i class="fa fa-plus color-info"></i>
+                                </span>Новый объект</button>
                             </div>
                             <div class="card-body">
-                                <div class="basic-form">
-                                    <form class="form-valide-with-icon" action="#" method="post">
-                                        <div class="form-group">
-                                            <label class="text-label">Логин</label>
-                                            <div class="input-group">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                                <div class="table-responsive">
+                                    <table id="example5" class="display mb-4 dataTablesCard" style="min-width: 845px;">
+                                        <thead>
+                                            <tr>
+                                                <th>Номер<br>объекта</th>
+                                                <th>Название объекта</th>
+                                                <th>Адрес объекта</th>
+                                                <th>NFC метки</th>
+                                                <th>Охраник(и)</th>
+                                                <th>ЧОП</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>#1</td>
+                                                <td>Название</td>
+                                                <td>ул. Пушкина д. Калатушкина кв.6</td>
+                                                <td>1, 103, 12</td>
+                                                <td>Иван Петровичь Иванов</td>
+                                                <td>Какаято ЧОП</td>
+                                                <td>
+                                                    <div class="dropdown ml-auto text-right">
+                                                        <div class="btn-link" data-toggle="modal" data-target="#exampleModalCenter">
+                                                            <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><rect x="0" y="0" width="24" height="24"></rect><circle fill="#000000" cx="5" cy="12" r="2"></circle><circle fill="#000000" cx="12" cy="12" r="2"></circle><circle fill="#000000" cx="19" cy="12" r="2"></circle></g></svg>
+                                                        </div>
+                                                    </div>
+                                                </td>                                               
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                            <!-- Modal -->
+                        <div class="modal fade" id="exampleModalCenter">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <form>
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Настройки объекта</h5>
+                                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="basic-form">
+                                                <div class="form-group">
+                                                    <label>Название объекта</label>
+                                                    <input type="text" class="form-control input-default " placeholder="Название обхода">
                                                 </div>
-                                                <input type="text" class="form-control" id="val-username1" name="val-username" placeholder="Введите логин..">
+                                                <div class="form-group">
+                                                    <p class="mb-1">Адрес объекта</p>
+                                                    <input type="text" class="form-control input-default " placeholder="Адрес объекта">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>NFC метки объекта</label>
+                                                    <select style="height: 42px" class="multi-select" name="states[]" multiple="multiple">
+                                                        <option value="AL">1</option>
+                                                        <option value="WY">2</option>
+                                                        <option value="UI">3</option>
+                                                        <option value="UI">4</option>
+                                                        <option value="UI">5</option>
+                                                        <option value="UI">6</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>ЧОП</label>
+                                                    <select class="dropdown-groups">
+                                                        <option>ячсс</option>
+                                                        <option>йвцй</option>
+                                                        <option>вапв</option>
+                                                        <option>фвыф</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Охраник</label>
+                                                    <select id="dynamic-option-creation">
+                                                        <option>Блинов Макар Сергеевич</option>
+                                                        <option>Львов Савва Матвеевич</option>
+                                                        <option>Морозов Александр Павлович</option>
+                                                        <option>Голубев Александр Вадимович</option>
+                                                    </select>
+                                                </div>
+                                                
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="text-label">Пароль</label>
-                                            <div class="input-group transparent-append">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
-                                                </div>
-                                                <input type="password" class="form-control" id="val-password1" name="val-password" placeholder="Введите пароль..">
-                                                <div class="input-group-append show-pass">
-                                                    <span class="input-group-text"> <i class="fa fa-eye-slash"></i>
-                                                    </span>
-                                                </div>
-                                            </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn tp-btn btn-danger">Удалить объект</button>
+                                            <button type="button" class="btn btn-danger light" data-dismiss="modal">Закрыть</button>
+                                            <button type="button" class="btn btn-primary">Сохранить</button>
                                         </div>
-                                        <button type="submit" class="btn mr-2 btn-primary">Вход</button>
                                     </form>
                                 </div>
                             </div>
                         </div>
-                    </div> -->
-                    <div class="col col-lg-12 col-sm-12">
-						<div class="card overflow-hidden">
-							<div class="text-center p-3 overlay-box " style="background-image: url(images/big/img1.jpg);">
-								<h3 class="mt-3 mb-1 text-white">Петров Иван Петрович</h3>
-								<p class="text-white mb-0">Администратор сайта</p>
-							</div>
-							<ul class="list-group list-group-flush">
-								<li class="list-group-item d-flex justify-content-between"><span class="mb-0">Роль</span> <strong class="text-muted">Администратор</strong></li>
-								<li class="list-group-item d-flex justify-content-between"><span class="mb-0">Меток</span> 		<strong class="text-muted">100</strong></li>
-								<li class="list-group-item d-flex justify-content-between"><span class="mb-0">Охраников</span> <strong class="text-muted">1</strong></li>
-								<li class="list-group-item d-flex justify-content-between"><span class="mb-0">Объектов</span> <strong class="text-muted">1</strong></li>
-							</ul>
-                            <div class="card-footer border-0 mt-0">		
-                            	<div class="row">
-                            		<div class="col-lg-6">
-                            			<button style="margin-bottom: 10px;" class="btn btn-primary btn-lg btn-block">
-											<i class="fas fa-dot-circle"></i> NFC Метки							
-										</button>
-                            		</div>
-                            		<div class="col-lg-6">
-                            			<button class="btn btn-primary btn-lg btn-block">
-											<i class="fas fa-users"></i> Пользователи							
-										</button>
-                            		</div>
-                            	</div>
-                            </div>
-                        </div>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-xl-4">
-                        <div class="card">
-                        	<a href="connect.html">
-                        		<div class="card-body">
-	                                <div class="row m-b-30">
-	                                    <div class="col-md-5 col-xxl-12">
-	                                        <div class="new-arrival-product">
-												<img class="img-fluid" src="./static/images/connect.png" alt="asdasd">
-	                                        </div>
-	                                    </div>
-	                                    <div class="col-md-7 col-xxl-12">
-	                                        <div class="new-arrival-content position-relative">
-	                                            <h4>Подключение ЧОП</h4>
-	                                            <p class="price">2500руб.</p>
-	                                            <p>Доступность: <span class="item"> Доступно <i
-	                                                        class="fa fa-check-circle text-success"></i></span></p>
-	                                            <p class="text-content">Подключение вашего охраного предприятия к системе.</p>
-	                                        </div>
-	                                    </div>
-	                                </div>
-	                            </div>
-                        	</a>
-                        </div>
-					</div>
-					<div class="col">
-                        <div class="card">
-                        	<a href="obsl.html">
-                        		<div class="card-body">
-	                                <div class="row m-b-30">
-	                                    <div class="col-md-5 col-xxl-12">
-	                                        <div class="new-arrival-product">
-	                                            <img class="img-fluid" src="./static/images/obsl.png" alt="">
-	                                        </div>
-	                                    </div>
-	                                    <div class="col-md-7 col-xxl-12">
-	                                        <div class="new-arrival-content position-relative">
-	                                            <h4>Обслкживание</h4>
-	                                            <p class="price">500руб/мес.</p>
-	                                            <p class="text-content">Обслуживание вашего ЧОП в нашей системе.</p>
-	                                        </div>
-	                                    </div>
-	                                </div>
-	                            </div>
-                        	</a>
-                        </div>
-					</div>
-					<div class="col">
-                        <div class="card">
-                        	<a href="buy_cards.html">
-                        		<div class="card-body">
-	                                <div class="row m-b-30">
-	                                    <div class="col-md-5 col-xxl-12">
-	                                        <div class="new-arrival-product">
-	                                            <img class="img-fluid" src="./static/images/nfccard.png" alt="">
-	                                        </div>
-	                                    </div>
-	                                    <div class="col-md-7 col-xxl-12">
-	                                        <div class="new-arrival-content position-relative">
-	                                            <h4>Заказ меток</h4>
-	                                            <p class="price">100руб/10шт.</p>
-	                                            <p>Доступность: <span class="item"> Доступно <i
-	                                                        class="fa fa-check-circle text-success"></i></span></p>
-	                                            <p class="text-content">Метки для сканирования охраником на объекте.</p>
-	                                        </div>
-	                                    </div>
-	                                </div>
-	                            </div>
-                        	</a>
-                        </div>
-					</div>
-				</div>
-
+                    </div>
+                </div>
+                </div>
+                
             </div>
         </div>
         <!--**********************************
@@ -414,23 +395,53 @@
     <!--**********************************
         Scripts
     ***********************************-->
-    <!-- Required vendors -->
     <script src="./static/vendor/global/global.min.js"></script>
-	<script src="./static/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="./static/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="./static/vendor/chart.js/Chart.bundle.min.js"></script>
     <script src="./static/js/custom.min.js"></script>
-	<script src="./static/js/deznav-init.js"></script>
-	
+    <script src="./static/js/deznav-init.js"></script>
+    <!-- Apex Chart -->
+    <script src="./static/vendor/apexchart/apexchart.js"></script>
+    
+
+    <script src="./static/vendor/select2/js/select2.full.min.js"></script>
+    <script src="./static/js/plugins-init/select2-init.js"></script>
+    
+
+
+    <!-- Daterangepicker -->
+    <!-- momment js is must -->
+    <script src="./static/vendor/moment/moment.min.js"></script>
+    <script src="./static/vendor/bootstrap-daterangepicker/daterangepicker.js"></script>
+    <!-- clockpicker -->
+    <script src="./static/vendor/clockpicker/js/bootstrap-clockpicker.min.js"></script>
+    <!-- asColorPicker -->
+    <script src="./static/vendor/jquery-asColor/jquery-asColor.min.js"></script>
+    <script src="./static/vendor/jquery-asGradient/jquery-asGradient.min.js"></script>
+    <script src="./static/vendor/jquery-asColorPicker/js/jquery-asColorPicker.min.js"></script>
+    <!-- Material color picker -->
+    <script src="./static/vendor/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js"></script>
+    <!-- pickdate -->
+    <script src="./static/vendor/pickadate/picker.js"></script>
+    <script src="./static/vendor/pickadate/picker.time.js"></script>
+    <script src="./static/vendor/pickadate/picker.date.js"></script>
+
+
+
+    <!-- Daterangepicker -->
+    <script src="./static/js/plugins-init/bs-daterange-picker-init.js"></script>
+    <!-- Clockpicker init -->
+    <script src="./static/js/plugins-init/clock-picker-init.js"></script>
+    <!-- asColorPicker init -->
+    <script src="./static/js/plugins-init/jquery-asColorPicker.init.js"></script>
+    <!-- Material color picker init -->
+    <script src="./static/js/plugins-init/material-date-picker-init.js"></script>
+    <!-- Pickdate -->
+    <script src="./static/js/plugins-init/pickadate-init.js"></script>
+
     <!-- Datatable -->
     <script src="./static/vendor/datatables/js/jquery.dataTables.min.js"></script>
     <script src="./static/js/plugins-init/datatables.init.js"></script>
-
-    <!-- Required vendors -->
-    <script src="./static/vendor/chart.js/Chart.bundle.min.js"></script>
-	<!-- Apex Chart -->
-	<script src="./static/vendor/apexchart/apexchart.js"></script>
-
-    <script src="./static/vendor/highlightjs/highlight.pack.min.js"></script>
-    <!-- Circle progress -->
 
 </body>
 </html>
