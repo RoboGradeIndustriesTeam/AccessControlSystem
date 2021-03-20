@@ -7,6 +7,11 @@ import uuid
 from db.models.user import *
 from db.models.roleassign import *
 from db.models.role import *
+from db.models.nfcaccs import *
+from db.models.object import *
+from db.models.objectsecs import *
+from db.models.task import *
+
 
 dotenv.load_dotenv()
 config = {
@@ -22,12 +27,10 @@ app = flask.Flask("AccessControlSystem", static_folder='', template_folder='fron
 CORS(app)
 
 @app.route('/', methods=["GET", "POST"])
-
 @app.route('/index', methods=["GET", "POST"])
 @app.route('/index.html', methods=["GET", "POST"])
 def index():
     mysqldb.reconnect()
-    print(flask.request.cookies.get('token'))
     if not flask.request.cookies.get('token') or User(mysqldb).SELECT("*", "WHERE token = \"" + flask.request.cookies.get('token') + "\"") is None:
         return flask.redirect('login.html')
     user = User(mysqldb)
@@ -36,15 +39,33 @@ def index():
     roleID = tmp.SELECT("roleID", f"WHERE userID = {user.id}")
     user_role = Role(mysqldb)
     user_role.fetchBy(user_role.SELECT("*", f"WHERE id = {roleID[0]}"))
+    objects = Object(mysqldb).SELECT("*", f"WHERE userOrgID = {user.id}", True)
+    nfcAccs = 0
+    objectsLen = 0
+    secs = 0
+    taskslen = 0
+    if objects:
+        for i in objects:
+            nfcaccsinobject = len(NFCAcc(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True))
+            nfcAccs += nfcaccsinobject
+        objectsLen = len(objects)
+        for i in objects:
+            secsinpobjects = len(ObjectSec(mysqldb).SELECT("*", f"WHERE objectID = {i[0]}", True))
+            secs += secsinpobjects
+        for i in objects:
+            tasksinprojects = len(Task(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True))
+            taskslen += tasksinprojects
+    print("Objects: ", objectsLen, "\nNFCAccs: ", nfcAccs, "\nSecurities: ", secs, "\nTasks: ", taskslen)
     if not user:
         return flask.redirect('login.html')
-    return flask.render_template('index.html', user=user, user_role=user_role)
+    return flask.render_template('index.html', user=user, user_role=user_role, userAnalitycs=[taskslen, objectsLen, secs, nfcAccs])
 
 
 @app.route('/login', methods=["GET", "POST"])
 @app.route('/login.html', methods=["GET", "POST"])
 def login():
     mysqldb.reconnect()
+    
     if flask.request.method == "POST":
         user = cursor.fetchone()
         user = User(mysqldb)
@@ -58,6 +79,37 @@ def login():
             return res
     return flask.render_template("login.html")
 
+
+@app.route("/create_a_bypass", methods=["GET", "POST"])
+@app.route("/create_a_bypass.html", methods=["GET", "POST"])
+def crBypass():
+    mysqldb.reconnect()
+    if not flask.request.cookies.get('token') or User(mysqldb).SELECT("*", "WHERE token = \"" + flask.request.cookies.get('token') + "\"") is None:
+        return flask.redirect('login.html')
+    user = User(mysqldb)
+    user.fetchBy(user.SELECT("*", "WHERE token = \"" + flask.request.cookies.get('token') + "\""))
+    tmp = RoleAssign(mysqldb)
+    roleID = tmp.SELECT("roleID", f"WHERE userID = {user.id}")
+    user_role = Role(mysqldb)
+    user_role.fetchBy(user_role.SELECT("*", f"WHERE id = {roleID[0]}"))
+    objects = Object(mysqldb).SELECT("*", f"WHERE userOrgID = {user.id}", True)
+    nfcAccs = 0
+    objectsLen = 0
+    secs = 0
+    taskslen = 0
+    if objects:
+        for i in objects:
+            nfcaccsinobject = len(NFCAcc(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True))
+            nfcAccs += nfcaccsinobject
+        objectsLen = len(objects)
+        for i in objects:
+            secsinpobjects = len(ObjectSec(mysqldb).SELECT("*", f"WHERE objectID = {i[0]}", True))
+            secs += secsinpobjects
+        for i in objects:
+            tasksinprojects = len(Task(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True))
+            taskslen += tasksinprojects
+    return flask.render_template('create_a_bypass.html', user=user, user_role=user_role, userAnalitycs=[taskslen, objectsLen, secs, nfcAccs])
+app.jinja_env.globals.update(len=len, User=User, Role=Role, RoleAssign=RoleAssign, NFCAcc=NFCAcc, Task=Task, Object=Object, ObjectSec=ObjectSec, mysqldb=mysqldb)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8074, debug=True)

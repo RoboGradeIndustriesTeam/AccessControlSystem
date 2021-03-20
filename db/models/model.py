@@ -8,13 +8,10 @@ class Model:
 		self.cursor = dblink.cursor()
 
 	def sql(self, sql):
-		#raise ValueError(sql)
-		print(sql)
 		self.cursor.execute(sql)
 
 	def fetchone(self):
 		data = self.cursor.fetchone()
-		print(data)
 		return data
 
 	def fetchall(self):

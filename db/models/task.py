@@ -1,6 +1,6 @@
 from db.models.model import Model
 
-class RoleAssign(Model):
+class Task(Model):
 	id : int = 0
 	orgID : int = 0
 	userID : int = 0
