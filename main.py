@@ -97,6 +97,7 @@ def crBypass():
     nfcAccs = 0
     objectsLen = 0
     secs = 0
+    secss = []
     taskslen = 0
     if objects:
         for i in objects:
@@ -106,15 +107,27 @@ def crBypass():
             nfcAccs += nfcaccsinobject
         objectsLen = len(objects)
         for i in objects:
-            secsinpobjects = len(ObjectSec(mysqldb).SELECT("*", f"WHERE objectID = {i[0]}", True))
+            ssecs = ObjectSec(mysqldb).SELECT("*", f"WHERE objectID = {i[0]}", True)
+            for j in ssecs:
+                secss.append(User(mysqldb).SELECT("*", f"WHERE id = {j[1]}"))
+            secsinpobjects = len(ssecs)
             secs += secsinpobjects
         for i in objects:
             tasksinprojects = len(Task(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True))
             taskslen += tasksinprojects
     
+    if flask.request.method == "POST":
+        name = flask.request.form.get("name")
+        date = flask.request.form.get("daterange")
+        nfcs = flask.request.form.getlist("states")
+        sec = flask.request.form.get("sec")
+        objID = flask.request.form.get("obj")
+        nfcss = ""
+        for i in nfcs:
+            nfcss += i + ","
+        Task(mysqldb).INSERT(f"(NULL, {objID}, {user.id}, {sec}, \"{name}\", \"{date}\", \"{nfcss}\")")
 
-    
-    return flask.render_template('create_a_bypass.html', user=user, user_role=user_role, userAnalitycs=[taskslen, objectsLen, secs, nfcAccs], nfces=nfces)
+    return flask.render_template('create_bypass.html', user=user, user_role=user_role, userAnalitycs=[taskslen, objectsLen, secs, nfcAccs], nfces=nfces, secs=secss, objects=objects)
 app.jinja_env.globals.update(len=len, User=User, Role=Role, RoleAssign=RoleAssign, NFCAcc=NFCAcc, Task=Task, Object=Object, ObjectSec=ObjectSec, mysqldb=mysqldb)
 
 if __name__ == "__main__":
