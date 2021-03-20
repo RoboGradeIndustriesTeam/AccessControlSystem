@@ -4,6 +4,9 @@ import os
 import dotenv
 from flask_cors import CORS
 import uuid
+from db.models.user import *
+from db.models.roleassign import *
+from db.models.role import *
 
 dotenv.load_dotenv()
 config = {
@@ -13,40 +16,47 @@ config = {
   'database': os.getenv("MYSQL_DB"),
   'raise_on_warnings': True,
 }
-
 mysqldb = connect(**config)
 cursor = mysqldb.cursor()
-app = flask.Flask("AccesControlSystem", static_folder='', template_folder='frontend')
+app = flask.Flask("AccessControlSystem", static_folder='', template_folder='frontend')
 CORS(app)
 
 @app.route('/', methods=["GET", "POST"])
+
 @app.route('/index', methods=["GET", "POST"])
-@app.route('/indez.html', methods=["GET", "POST"])
+@app.route('/index.html', methods=["GET", "POST"])
 def index():
-    if not flask.request.cookies.get('token'):
+    mysqldb.reconnect()
+    print(flask.request.cookies.get('token'))
+    if not flask.request.cookies.get('token') or User(mysqldb).SELECT("*", "WHERE token = \"" + flask.request.cookies.get('token') + "\"") is None:
         return flask.redirect('login.html')
-    cursor.execute("SELECT * FROM users WHERE token", (flask.request.cookies.get('token')))
-    user = cursor.fetchone()
+    user = User(mysqldb)
+    user.fetchBy(user.SELECT("*", "WHERE token = \"" + flask.request.cookies.get('token') + "\""))
+    tmp = RoleAssign(mysqldb)
+    roleID = tmp.SELECT("roleID", f"WHERE userID = {user.id}")
+    user_role = Role(mysqldb)
+    user_role.fetchBy(user_role.SELECT("*", f"WHERE id = {roleID[0]}"))
     if not user:
         return flask.redirect('login.html')
-    return flask.render_template('index.html', user=user)
+    return flask.render_template('index.html', user=user, user_role=user_role)
+
+
 @app.route('/login', methods=["GET", "POST"])
 @app.route('/login.html', methods=["GET", "POST"])
 def login():
     mysqldb.reconnect()
     if flask.request.method == "POST":
-        cursor.execute("SELECT * FROM users WHERE login = %s AND password = %s", (flask.request.form.get('login'), flask.request.form.get('pass')))
         user = cursor.fetchone()
-        if not user:
+        user = User(mysqldb)
+        user.fetchBy(user.SELECT("*", f"WHERE login = \"{flask.request.form.get('login')}\" AND password = \"{flask.request.form.get('pass')}\""))
+        if user is not None:
             user_token = uuid.uuid1()
-            cursor.execute("UPDATE users SET token = %s WHERE id = %s", (user_token.hex, user[0]))
+            user.UPDATE({"token": str(user_token)}, f"WHERE id = {user.id}")
             mysqldb.commit()
             res = flask.redirect('/')
-            res.set_cookie('token', bytes(user_token.hex.encode()), max_age=60*60*24*365*5)
+            res.set_cookie('token', bytes(str(user_token).encode()), max_age=60*60*24*365*5)
             return res
     return flask.render_template("login.html")
-
-
 
 
 if __name__ == "__main__":
