@@ -31,9 +31,6 @@ CORS(app)
 @app.route('/index.html', methods=["GET", "POST"])
 def index():
     mysqldb.reconnect()
-    
-    
-
     if flask.request.cookies.get('token') is not None:
         user = User(mysqldb)
         user.fetchBy(user.SELECT("*", "WHERE token = \"" + flask.request.cookies.get('token') + "\""))
@@ -72,108 +69,245 @@ def index():
                 return res
         user = None
         user_role = None
-        userAnalitycs = [0, 0, 0, 0]
+        userAnalitycs = [0, 0, 0, 0]    
     return flask.render_template('index.html', user=user, user_role=user_role, userAnalitycs=userAnalitycs)
 
 
 
-@app.route("/create_a_bypass", methods=["GET", "POST"])
-@app.route("/create_a_bypass.html", methods=["GET", "POST"])
+@app.route("/detours", methods=["GET", "POST"])
+@app.route("/detours.html", methods=["GET", "POST"])
 def crBypass():
     mysqldb.reconnect()
-    if not flask.request.cookies.get('token') or User(mysqldb).SELECT("*", "WHERE token = \"" + flask.request.cookies.get('token') + "\"") is None:
-        return flask.redirect('login.html')
-    user = User(mysqldb)
-    user.fetchBy(user.SELECT("*", "WHERE token = \"" + flask.request.cookies.get('token') + "\""))
-    tmp = RoleAssign(mysqldb)
-    roleID = tmp.SELECT("roleID", f"WHERE userID = {user.id}")
-    user_role = Role(mysqldb)
-    user_role.fetchBy(user_role.SELECT("*", f"WHERE id = {roleID[0]}"))
-    objects = Object(mysqldb).SELECT("*", f"WHERE userOrgID = {user.id}", True)
-    nfces = []
-    nfcAccs = 0
-    objectsLen = 0
-    secs = 0
-    secss = []
-    taskslen = 0
-    if objects:
-        for i in objects:
-            nfc = NFCAcc(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True)
-            nfces.extend(nfc)
-            nfcaccsinobject = len(nfc)
-            nfcAccs += nfcaccsinobject
-        objectsLen = len(objects)
-        for i in objects:
-            ssecs = ObjectSec(mysqldb).SELECT("*", f"WHERE objectID = {i[0]}", True)
-            for j in ssecs:
-                secss.append(User(mysqldb).SELECT("*", f"WHERE id = {j[1]}"))
-            secsinpobjects = len(ssecs)
-            secs += secsinpobjects
-        for i in objects:
-            tasksinprojects = len(Task(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True))
-            taskslen += tasksinprojects
     
-    if flask.request.method == "POST":
-        name = flask.request.form.get("name")
-        date = flask.request.form.get("daterange")
-        nfcs = flask.request.form.getlist("states")
-        sec = flask.request.form.get("sec")
-        objID = flask.request.form.get("obj")
-        nfcss = ""
-        for i in nfcs:
-            nfcss += i + ","
-        Task(mysqldb).INSERT(f"(NULL, {objID}, {user.id}, {sec}, \"{name}\", \"{date}\", \"{nfcss}\")")
-
-    return flask.render_template('create_a_bypass.html', user=user, user_role=user_role, userAnalitycs=[taskslen, objectsLen, secs, nfcAccs], nfces=nfces, secs=secss, objects=objects)
+    if flask.request.cookies.get('token') is not None:
+        user = User(mysqldb)
+        user.fetchBy(user.SELECT("*", "WHERE token = \"" + flask.request.cookies.get('token') + "\""))
+        tmp = RoleAssign(mysqldb)
+        roleID = tmp.SELECT("roleID", f"WHERE userID = {user.id}")
+        user_role = Role(mysqldb)
+        user_role.fetchBy(user_role.SELECT("*", f"WHERE id = {roleID[0]}"))
+        objects = Object(mysqldb).SELECT("*", f"WHERE userOrgID = {user.id}", True)
+        nfcAccs = 0
+        objectsLen = 0
+        secs = 0
+        secss = []
+        nfces = []
+        tasks = []
+        taskslen = 0
+        if objects:
+            for i in objects:
+                nnfc = NFCAcc(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True)
+                nfces.extend(nnfc)
+                nfcaccsinobject = len(nnfc)
+                nfcAccs += nfcaccsinobject
+            objectsLen = len(objects)
+            for i in objects:
+                secccs = ObjectSec(mysqldb).SELECT("*", f"WHERE objectID = {i[0]}", True)
+                secss.extend(secccs)
+                secsinpobjects = len(secccs)
+                secs += secsinpobjects
+            for i in objects:
+                tsk = Task(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True)
+                tasks.extend(tsk)
+                tasksinprojects = len(tsk)
+                taskslen += tasksinprojects
+        userAnalitycs=[taskslen, objectsLen, secs, nfcAccs]
+        if flask.request.method == "POST" and flask.request.form.get("form-type") == "addDet":
+            name = flask.request.form.get("name")
+            date = flask.request.form.get("daterange")
+            nfcs = flask.request.form.getlist("states")
+            sec = flask.request.form.get("sec")
+            objID = flask.request.form.get("obj")
+            nfcss = ""
+            for i in nfcs:
+                nfcss += i + ","
+            Task(mysqldb).INSERT(f"(NULL, {objID}, {user.id}, {sec}, \"{name}\", \"{date}\", \"{nfcss}\")")
+    else:
+        if flask.request.method == "POST":
+            user2 = cursor.fetchone()
+            user2 = User(mysqldb)
+            user2.fetchBy(user2.SELECT("*", f"WHERE login = \"{flask.request.form.get('login')}\" AND password = \"{flask.request.form.get('pass')}\""))
+            if user2 is not None:
+                user_token = uuid.uuid1()
+                user2.UPDATE({"token": str(user_token)}, f"WHERE id = {user2.id}")
+                mysqldb.commit()
+                res = flask.redirect('/')
+                res.set_cookie('token', bytes(str(user_token).encode()), max_age=60*60*24*365*5)
+                return res
+        user = None
+        user_role = None
+        userAnalitycs = [0, 0, 0, 0]
+        secss = []
+        nfces = []
+        objects = []
+    
+    return flask.render_template('detours.html', user=user, user_role=user_role, userAnalitycs=[taskslen, objectsLen, secs, nfcAccs], nfces=nfces, secs=secss, objects=objects, tasks=tasks)
 
 @app.route('/users', methods=["GET", "POST"])
 @app.route('/users.html', methods=["GET", "POST"])
 def user():
     mysqldb.reconnect()
-    if not flask.request.cookies.get('token') or User(mysqldb).SELECT("*", "WHERE token = \"" + flask.request.cookies.get('token') + "\"") is None:
-        return flask.redirect('login.html')
-    user = User(mysqldb)
-    user.fetchBy(user.SELECT("*", "WHERE token = \"" + flask.request.cookies.get('token') + "\""))
-    tmp = RoleAssign(mysqldb)
-    roleID = tmp.SELECT("*", f"WHERE userID = {user.id}")
-    user_role = Role(mysqldb)
-    user_role.fetchBy(user_role.SELECT("*", f"WHERE id = {roleID[1]}"))
-    objects = Object(mysqldb).SELECT("*", f"WHERE userOrgID = {user.id}", True)
-    nfcAccs = 0
-    objectsLen = 0
-    secs = 0
-    taskslen = 0
-    users = []
-    for i in User(mysqldb).SELECT("*", oneOrAll=True):
-        if user_role.isAdmin == 1:
-            users.append(i)
-        else:
-            for i in Object(mysqldb).SELECT("*", f"WHERE userOrgID = {user.id}", oneOrAll=True):
-                for j in ObjectSec(mysqldb).SELECT("*", f"WHERE objectID = {i[0]}", oneOrAll=True):
-                    users.append(User(mysqldb).SELECT("*", f"WHERE id = {j[1]}"))
-    if objects:
-        for i in objects:
-            nfcaccsinobject = len(NFCAcc(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True))
-            nfcAccs += nfcaccsinobject
-        objectsLen = len(objects)
-        for i in objects:
-            secsinpobjects = len(ObjectSec(mysqldb).SELECT("*", f"WHERE objectID = {i[0]}", True))
-            secs += secsinpobjects
-        for i in objects:
-            tasksinprojects = len(Task(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True))
-            taskslen += tasksinprojects
-    if not user:
-        return flask.redirect('login.html')
+    if flask.request.cookies.get('token') is not None:
+        user = User(mysqldb)
+        user.fetchBy(user.SELECT("*", "WHERE token = \"" + flask.request.cookies.get('token') + "\""))
+        tmp = RoleAssign(mysqldb)
+        roleID = tmp.SELECT("roleID", f"WHERE userID = {user.id}")
+        user_role = Role(mysqldb)
+        user_role.fetchBy(user_role.SELECT("*", f"WHERE id = {roleID[0]}"))
+        objects = Object(mysqldb).SELECT("*", f"WHERE userOrgID = {user.id}", True)
+        nfcAccs = 0
+        objectsLen = 0
+        secs = 0
+        users = []
+        taskslen = 0
+        if objects:
+            for i in objects:
+                nfcaccsinobject = len(NFCAcc(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True))
+                nfcAccs += nfcaccsinobject
+            objectsLen = len(objects)
+            for i in objects:
+                ssssec = ObjectSec(mysqldb).SELECT("*", f"WHERE objectID = {i[0]}", True)
+                for i in ssssec:
+                    user3 = User(mysqldb)
+                    users.append(user3.SELECT("*", f"WHERE id = {i[1]}"))
+                secsinpobjects = len(ssssec)
+                secs += secsinpobjects
+            for i in objects:
+                tasksinprojects = len(Task(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True))
+                taskslen += tasksinprojects
+        userAnalitycs=[taskslen, objectsLen, secs, nfcAccs]
+        if flask.request.method == "POST":
+            ftyp = flask.request.form.get("form-type")
 
-    if flask.request.method == "POST":
-        ftyp = flask.request.form.get("form-type")
-
-        if ftyp == "addUser":
-            print("ASs")
-            if (flask.request.form.get("user_name"),) in User(mysqldb).SELECT("login", oneOrAll=True):
-                pass
+            if ftyp == "addUser":
+                if (flask.request.form.get("user_name"),) in User(mysqldb).SELECT("login", oneOrAll=True):
+                    tmp = User(mysqldb).SELECT('id', f"WHERE login = \"{flask.request.form.get('user_name')}\"")
+                    ObjectSec(mysqldb).INSERT(f"(NULL, {tmp[0]}, {int(flask.request.form.get('obj'))})")
                 
-    return flask.render_template('users.html', user=user, user_role=user_role, userAnalitycs=[taskslen, objectsLen, secs, nfcAccs], users=users)
+    else:
+        if flask.request.method == "POST":
+            user2 = cursor.fetchone()
+            user2 = User(mysqldb)
+            user2.fetchBy(user2.SELECT("*", f"WHERE login = \"{flask.request.form.get('login')}\" AND password = \"{flask.request.form.get('pass')}\""))
+            if user2 is not None:
+                user_token = uuid.uuid1()
+                user2.UPDATE({"token": str(user_token)}, f"WHERE id = {user2.id}")
+                mysqldb.commit()
+                res = flask.redirect('/')
+                res.set_cookie('token', bytes(str(user_token).encode()), max_age=60*60*24*365*5)
+                return res
+        user = None
+        user_role = None
+        userAnalitycs = [0, 0, 0, 0]
+        users = []
+        objects = []
+
+    return flask.render_template('users.html', user=user, user_role=user_role, userAnalitycs=[taskslen, objectsLen, secs, nfcAccs], users=users, objects=objects)
+
+@app.route('/object', methods=["GET", "POST"])
+@app.route('/object.html', methods=["GET", "POST"])
+def object():
+    mysqldb.reconnect()
+    if flask.request.cookies.get('token') is not None:
+        user = User(mysqldb)
+        user.fetchBy(user.SELECT("*", "WHERE token = \"" + flask.request.cookies.get('token') + "\""))
+        tmp = RoleAssign(mysqldb)
+        roleID = tmp.SELECT("roleID", f"WHERE userID = {user.id}")
+        user_role = Role(mysqldb)
+        user_role.fetchBy(user_role.SELECT("*", f"WHERE id = {roleID[0]}"))
+        objects = Object(mysqldb).SELECT("*", f"WHERE userOrgID = {user.id}", True)
+        nfcAccs = 0
+        objectsLen = 0
+        secs = 0
+        taskslen = 0
+        if objects:
+            for i in objects:
+                nfcaccsinobject = len(NFCAcc(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True))
+                nfcAccs += nfcaccsinobject
+            objectsLen = len(objects)
+            for i in objects:
+                secsinpobjects = len(ObjectSec(mysqldb).SELECT("*", f"WHERE objectID = {i[0]}", True))
+                secs += secsinpobjects
+            for i in objects:
+                tasksinprojects = len(Task(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True))
+                taskslen += tasksinprojects
+        userAnalitycs=[taskslen, objectsLen, secs, nfcAccs]
+    else:
+        if flask.request.method == "POST":
+            user2 = cursor.fetchone()
+            user2 = User(mysqldb)
+            user2.fetchBy(user2.SELECT("*", f"WHERE login = \"{flask.request.form.get('login')}\" AND password = \"{flask.request.form.get('pass')}\""))
+            if user2 is not None:
+                user_token = uuid.uuid1()
+                user2.UPDATE({"token": str(user_token)}, f"WHERE id = {user2.id}")
+                mysqldb.commit()
+                res = flask.redirect('/')
+                res.set_cookie('token', bytes(str(user_token).encode()), max_age=60*60*24*365*5)
+                return res
+        user = None
+        user_role = None
+        userAnalitycs = [0, 0, 0, 0]    
+    return flask.render_template('object.html', user=user, user_role=user_role, userAnalitycs=userAnalitycs, objects=objects)
+
+@app.route('/nfc', methods=["GET", "POST"])
+@app.route('/nfc.html', methods=["GET", "POST"])
+def nfc():
+    mysqldb.reconnect()
+    if flask.request.cookies.get('token') is not None:
+        user = User(mysqldb)
+        user.fetchBy(user.SELECT("*", "WHERE token = \"" + flask.request.cookies.get('token') + "\""))
+        tmp = RoleAssign(mysqldb)
+        roleID = tmp.SELECT("roleID", f"WHERE userID = {user.id}")
+        user_role = Role(mysqldb)
+        user_role.fetchBy(user_role.SELECT("*", f"WHERE id = {roleID[0]}"))
+        objects = Object(mysqldb).SELECT("*", f"WHERE userOrgID = {user.id}", True)
+        nfcAccs = 0
+        nfces = []
+        objectsLen = 0
+        secs = 0
+        taskslen = 0
+        if objects:
+            for i in objects:
+                nfccc = NFCAcc(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True)
+                nfces.extend(nfccc)
+                nfcaccsinobject = len(nfccc)
+                nfcAccs += nfcaccsinobject
+            objectsLen = len(objects)
+            for i in objects:
+                secsinpobjects = len(ObjectSec(mysqldb).SELECT("*", f"WHERE objectID = {i[0]}", True))
+                secs += secsinpobjects
+            for i in objects:
+                tasksinprojects = len(Task(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True))
+                taskslen += tasksinprojects
+        userAnalitycs=[taskslen, objectsLen, secs, nfcAccs]
+        if flask.request.method == "POST" and flask.request.form.get("form-type") == "addNFC":
+            NFCAcc(mysqldb).INSERT(f"(NULL, {flask.request.form.get('data')}, {flask.request.form.get('obj')} )")
+    else:
+        if flask.request.method == "POST":
+            user2 = cursor.fetchone()
+            user2 = User(mysqldb)
+            user2.fetchBy(user2.SELECT("*", f"WHERE login = \"{flask.request.form.get('login')}\" AND password = \"{flask.request.form.get('pass')}\""))
+            if user2 is not None:
+                user_token = uuid.uuid1()
+                user2.UPDATE({"token": str(user_token)}, f"WHERE id = {user2.id}")
+                mysqldb.commit()
+                res = flask.redirect('/')
+                res.set_cookie('token', bytes(str(user_token).encode()), max_age=60*60*24*365*5)
+                return res
+        user = None
+        user_role = None
+        userAnalitycs = [0, 0, 0, 0]    
+    return flask.render_template('nfc.html', user=user, user_role=user_role, userAnalitycs=userAnalitycs, objects=objects, nfces=nfces)
+
+@app.route('/activate/<id>')
+def act(id):
+    print(id)
+    tmp = NFCAcc(mysqldb).SELECT("*", f"WHERE nfcID = {id}")
+
+    if not tmp:
+        return "Ошибка"
+    else:
+        return "Успех"
 
 def getUserRole(userID):
     tmp = RoleAssign(mysqldb)
@@ -182,7 +316,19 @@ def getUserRole(userID):
     user_role.fetchBy(user_role.SELECT("*", f"WHERE id = {roleID[1]}"))
     return user_role
 
-app.jinja_env.globals.update(len=len, User=User, Role=Role, RoleAssign=RoleAssign, NFCAcc=NFCAcc, Task=Task, Object=Object, ObjectSec=ObjectSec, mysqldb=mysqldb, getUserRole=getUserRole)
+def GetUserByID(uid):
+    return User(mysqldb).SELECT("*", f"WHERE id = {uid}")
+
+def GetObjByID(uid):
+    return Object(mysqldb).SELECT("*", f"WHERE id = {uid}")
+
+def GetNFCByObejct(oid):
+    return NFCAcc(mysqldb).SELECT("*", f"WHERE orgID = {oid}", True)
+
+def GetSecsByObejct(uid):
+    return ObjectSec(mysqldb).SELECT("*", f"WHERE objectID = {uid}", True)
+
+app.jinja_env.globals.update(len=len, User=User, Role=Role, RoleAssign=RoleAssign, NFCAcc=NFCAcc, Task=Task, Object=Object, ObjectSec=ObjectSec, mysqldb=mysqldb, getUserRole=getUserRole, GetUserByID=GetUserByID, GetObjByID=GetObjByID, GetNFCByObejct=GetNFCByObejct, GetSecsByObejct=GetSecsByObejct)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=80, debug=True)
