@@ -11,6 +11,8 @@ from db.models.nfcaccs import *
 from db.models.object import *
 from db.models.objectsecs import *
 from db.models.task import *
+from db.models.logs import *
+from time import gmtime, strftime
 
 
 dotenv.load_dotenv()
@@ -303,10 +305,12 @@ def nfc():
 def act(id):
     print(id)
     tmp = NFCAcc(mysqldb).SELECT("*", f"WHERE nfcID = {id}")
-
+    time = strftime("%Y %m %d %H %M %S", gmtime())
     if not tmp:
+        Log(mysqldb).INSERT(f"(NULL, \"{time}\", 0)")
         return "Ошибка"
     else:
+        Log(mysqldb).INSERT(f"(NULL, \"{time}\", 1)")
         return "Успех"
 
 def getUserRole(userID):
