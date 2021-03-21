@@ -327,6 +327,8 @@ def manage_chop():
                 tasksinprojects = len(Task(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True))
                 taskslen += tasksinprojects
         userAnalitycs=[taskslen, objectsLen, secs, nfcAccs]
+        if flask.request.method == "POST":
+            Object(mysqldb).INSERT(f"(NULL, {user.id}, \"{flask.request.form.get('name')}\", \"{flask.request.form.get('address')}\")")
     else:
         if flask.request.method == "POST":
             user2 = cursor.fetchone()
@@ -342,7 +344,7 @@ def manage_chop():
         user = None
         user_role = None
         userAnalitycs = [0, 0, 0, 0]    
-    return flask.render_template('manage_chop.html', user=user, user_role=user_role, userAnalitycs=userAnalitycs)
+    return flask.render_template('manage_chop.html', user=user, user_role=user_role, userAnalitycs=userAnalitycs, objects=objects)
 
 
 def getUserRole(userID):

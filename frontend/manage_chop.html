@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} Обходы {% endblock %}
+{% block title %} Управление ЧОП {% endblock %}
 {% block content %}
 <div class="row">
     <div class="col">
@@ -38,7 +38,7 @@
         <div class="modal fade" id="addChop">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
-                    <form>
+                    <form method="POST">
                         <div class="modal-header">
                             <h5 class="modal-title">Настройки ЧОП</h5>
                             <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
@@ -47,29 +47,13 @@
                             <div class="basic-form">
                                 <div class="form-group">
                                     <label>Название ЧОП</label>
-                                    <input type="text" class="form-control input-default " placeholder="Название ЧОП">
+                                    <input name="name" type="text" class="form-control input-default " placeholder="Название ЧОП">
                                 </div>
+                            </div>
+                            <div class="basic-form">
                                 <div class="form-group">
-                                    <label>Город ЧОП</label>
-                                    <input type="text" class="form-control input-default " placeholder="Город ЧОП">
-                                </div>
-                                <div class="form-group">
-                                    <label>Владелец ЧОП</label>
-                                    <select id="single-select">
-                                        <option value="AL">Иванов Петр Петрович</option>
-                                        <option value="WY">огравгшцрщша</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="custom-control custom-checkbox mb-3 checkbox-warning">
-                                                <input type="checkbox" class="custom-control-input" checked="" id="customCheckBox3" required="">
-                                                <label class="custom-control-label" for="customCheckBox3"> Работа ЧОП</label>
-                                                <p>(Флажок включен - ЧОП работает)</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <label>Адрес</label>
+                                    <input name="address" type="text" class="form-control input-default " placeholder="Адрес">
                                 </div>
                             </div>
                         </div>
