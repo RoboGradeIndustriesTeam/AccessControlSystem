@@ -37,9 +37,9 @@ def index():
         user = User(mysqldb)
         user.fetchBy(user.SELECT("*", "WHERE token = \"" + flask.request.cookies.get('token') + "\""))
         tmp = RoleAssign(mysqldb)
-        roleID = tmp.SELECT("roleID", f"WHERE userID = {user.id}")
-        user_role = Role(mysqldb)
-        user_role.fetchBy(user_role.SELECT("*", f"WHERE id = {roleID[0]}"))
+        
+        user_role = getUserRole(user.id)
+
         objects = Object(mysqldb).SELECT("*", f"WHERE userOrgID = {user.id}", True)
         nfcAccs = 0
         objectsLen = 0
@@ -63,11 +63,12 @@ def index():
             user2 = User(mysqldb)
             user2.fetchBy(user2.SELECT("*", f"WHERE login = \"{flask.request.form.get('login')}\" AND password = \"{flask.request.form.get('pass')}\""))
             if user2 is not None:
-                user_token = uuid.uuid1()
-                user2.UPDATE({"token": str(user_token)}, f"WHERE id = {user2.id}")
+                
+                user_token = str(uuid.uuid1())
+                user2.UPDATE({"token": user_token}, f"WHERE id = {user2.id}")
                 mysqldb.commit()
                 res = flask.redirect('/')
-                res.set_cookie('token', bytes(str(user_token).encode()), max_age=60*60*24*365*5)
+                res.set_cookie('token', bytes(user_token.encode()), max_age=60*60*24*365*5)
                 return res
         user = None
         user_role = None
@@ -84,10 +85,7 @@ def crBypass():
     if flask.request.cookies.get('token') is not None:
         user = User(mysqldb)
         user.fetchBy(user.SELECT("*", "WHERE token = \"" + flask.request.cookies.get('token') + "\""))
-        tmp = RoleAssign(mysqldb)
-        roleID = tmp.SELECT("roleID", f"WHERE userID = {user.id}")
-        user_role = Role(mysqldb)
-        user_role.fetchBy(user_role.SELECT("*", f"WHERE id = {roleID[0]}"))
+        user_role = getUserRole(user.id)
         objects = Object(mysqldb).SELECT("*", f"WHERE userOrgID = {user.id}", True)
         nfcAccs = 0
         objectsLen = 0
@@ -130,11 +128,11 @@ def crBypass():
             user2 = User(mysqldb)
             user2.fetchBy(user2.SELECT("*", f"WHERE login = \"{flask.request.form.get('login')}\" AND password = \"{flask.request.form.get('pass')}\""))
             if user2 is not None:
-                user_token = uuid.uuid1()
-                user2.UPDATE({"token": str(user_token)}, f"WHERE id = {user2.id}")
+                user_token = str(uuid.uuid1())
+                user2.UPDATE({"token": user_token}, f"WHERE id = {user2.id}")
                 mysqldb.commit()
                 res = flask.redirect('/')
-                res.set_cookie('token', bytes(str(user_token).encode()), max_age=60*60*24*365*5)
+                res.set_cookie('token', bytes(user_token.encode()), max_age=60*60*24*365*5)
                 return res
         user = None
         user_role = None
@@ -152,10 +150,7 @@ def user():
     if flask.request.cookies.get('token') is not None:
         user = User(mysqldb)
         user.fetchBy(user.SELECT("*", "WHERE token = \"" + flask.request.cookies.get('token') + "\""))
-        tmp = RoleAssign(mysqldb)
-        roleID = tmp.SELECT("roleID", f"WHERE userID = {user.id}")
-        user_role = Role(mysqldb)
-        user_role.fetchBy(user_role.SELECT("*", f"WHERE id = {roleID[0]}"))
+        user_role = getUserRole(user.id)
         objects = Object(mysqldb).SELECT("*", f"WHERE userOrgID = {user.id}", True)
         nfcAccs = 0
         objectsLen = 0
@@ -192,11 +187,11 @@ def user():
             user2 = User(mysqldb)
             user2.fetchBy(user2.SELECT("*", f"WHERE login = \"{flask.request.form.get('login')}\" AND password = \"{flask.request.form.get('pass')}\""))
             if user2 is not None:
-                user_token = uuid.uuid1()
-                user2.UPDATE({"token": str(user_token)}, f"WHERE id = {user2.id}")
+                user_token = str(uuid.uuid1())
+                user2.UPDATE({"token": user_token}, f"WHERE id = {user2.id}")
                 mysqldb.commit()
                 res = flask.redirect('/')
-                res.set_cookie('token', bytes(str(user_token).encode()), max_age=60*60*24*365*5)
+                res.set_cookie('token', bytes(user_token.encode()), max_age=60*60*24*365*5)
                 return res
         user = None
         user_role = None
@@ -213,10 +208,7 @@ def object():
     if flask.request.cookies.get('token') is not None:
         user = User(mysqldb)
         user.fetchBy(user.SELECT("*", "WHERE token = \"" + flask.request.cookies.get('token') + "\""))
-        tmp = RoleAssign(mysqldb)
-        roleID = tmp.SELECT("roleID", f"WHERE userID = {user.id}")
-        user_role = Role(mysqldb)
-        user_role.fetchBy(user_role.SELECT("*", f"WHERE id = {roleID[0]}"))
+        user_role = getUserRole(user.id)
         objects = Object(mysqldb).SELECT("*", f"WHERE userOrgID = {user.id}", True)
         nfcAccs = 0
         objectsLen = 0
@@ -240,11 +232,11 @@ def object():
             user2 = User(mysqldb)
             user2.fetchBy(user2.SELECT("*", f"WHERE login = \"{flask.request.form.get('login')}\" AND password = \"{flask.request.form.get('pass')}\""))
             if user2 is not None:
-                user_token = uuid.uuid1()
-                user2.UPDATE({"token": str(user_token)}, f"WHERE id = {user2.id}")
+                user_token = str(uuid.uuid1())
+                user2.UPDATE({"token": user_token}, f"WHERE id = {user2.id}")
                 mysqldb.commit()
                 res = flask.redirect('/')
-                res.set_cookie('token', bytes(str(user_token).encode()), max_age=60*60*24*365*5)
+                res.set_cookie('token', bytes(user_token.encode()), max_age=60*60*24*365*5)
                 return res
         user = None
         user_role = None
@@ -258,10 +250,7 @@ def nfc():
     if flask.request.cookies.get('token') is not None:
         user = User(mysqldb)
         user.fetchBy(user.SELECT("*", "WHERE token = \"" + flask.request.cookies.get('token') + "\""))
-        tmp = RoleAssign(mysqldb)
-        roleID = tmp.SELECT("roleID", f"WHERE userID = {user.id}")
-        user_role = Role(mysqldb)
-        user_role.fetchBy(user_role.SELECT("*", f"WHERE id = {roleID[0]}"))
+        user_role = getUserRole(user.id)
         objects = Object(mysqldb).SELECT("*", f"WHERE userOrgID = {user.id}", True)
         nfcAccs = 0
         nfces = []
@@ -290,11 +279,11 @@ def nfc():
             user2 = User(mysqldb)
             user2.fetchBy(user2.SELECT("*", f"WHERE login = \"{flask.request.form.get('login')}\" AND password = \"{flask.request.form.get('pass')}\""))
             if user2 is not None:
-                user_token = uuid.uuid1()
-                user2.UPDATE({"token": str(user_token)}, f"WHERE id = {user2.id}")
+                user_token = str(uuid.uuid1())
+                user2.UPDATE({"token": user_token}, f"WHERE id = {user2.id}")
                 mysqldb.commit()
                 res = flask.redirect('/')
-                res.set_cookie('token', bytes(str(user_token).encode()), max_age=60*60*24*365*5)
+                res.set_cookie('token', bytes(user_token.encode()), max_age=60*60*24*365*5)
                 return res
         user = None
         user_role = None
@@ -313,12 +302,58 @@ def act(id):
         Log(mysqldb).INSERT(f"(NULL, \"{time}\", 1)")
         return "Успех"
 
+@app.route('/manage_chop', methods=["GET", "POST"])
+@app.route('/manage_chop.html', methods=["GET", "POST"])
+def manage_chop():
+    mysqldb.reconnect()
+    if flask.request.cookies.get('token') is not None:
+        user = User(mysqldb)
+        user.fetchBy(user.SELECT("*", "WHERE token = \"" + flask.request.cookies.get('token') + "\""))
+        user_role = getUserRole(user.id)
+        objects = Object(mysqldb).SELECT("*", f"WHERE userOrgID = {user.id}", True)
+        nfcAccs = 0
+        objectsLen = 0
+        secs = 0
+        taskslen = 0
+        if objects:
+            for i in objects:
+                nfcaccsinobject = len(NFCAcc(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True))
+                nfcAccs += nfcaccsinobject
+            objectsLen = len(objects)
+            for i in objects:
+                secsinpobjects = len(ObjectSec(mysqldb).SELECT("*", f"WHERE objectID = {i[0]}", True))
+                secs += secsinpobjects
+            for i in objects:
+                tasksinprojects = len(Task(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True))
+                taskslen += tasksinprojects
+        userAnalitycs=[taskslen, objectsLen, secs, nfcAccs]
+    else:
+        if flask.request.method == "POST":
+            user2 = cursor.fetchone()
+            user2 = User(mysqldb)
+            user2.fetchBy(user2.SELECT("*", f"WHERE login = \"{flask.request.form.get('login')}\" AND password = \"{flask.request.form.get('pass')}\""))
+            if user2 is not None:
+                user_token = str(uuid.uuid1())
+                user2.UPDATE({"token": user_token}, f"WHERE id = {user2.id}")
+                mysqldb.commit()
+                res = flask.redirect('/')
+                res.set_cookie('token', bytes(user_token.encode()), max_age=60*60*24*365*5)
+                return res
+        user = None
+        user_role = None
+        userAnalitycs = [0, 0, 0, 0]    
+    return flask.render_template('manage_chop.html', user=user, user_role=user_role, userAnalitycs=userAnalitycs)
+
+
 def getUserRole(userID):
-    tmp = RoleAssign(mysqldb)
-    roleID = tmp.SELECT("*", f"WHERE userID = {userID}")
-    user_role = Role(mysqldb)
-    user_role.fetchBy(user_role.SELECT("*", f"WHERE id = {roleID[1]}"))
-    return user_role
+    try:
+        tmp = RoleAssign(mysqldb)
+        roleID = tmp.SELECT("*", f"WHERE userID = {userID}")
+        user_role = Role(mysqldb)
+        user_role.fetchBy(user_role.SELECT("*", f"WHERE id = {roleID[1]}"))
+        return user_role
+    except TypeError:
+        return None
 
 def GetUserByID(uid):
     return User(mysqldb).SELECT("*", f"WHERE id = {uid}")
