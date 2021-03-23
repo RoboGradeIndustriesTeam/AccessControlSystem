@@ -126,7 +126,7 @@ def user():
         users2 = tmp2.securityUsers
         users = []
         for i in users2:
-            users.append(GetUserByID(users[1]))
+            users.append(GetUserByID(i[1]))
         userAnalitycs = tmp2.fetch(mysqldb, user.id)
         if flask.request.method == "POST":
             ftyp = flask.request.form.get("form-type")
