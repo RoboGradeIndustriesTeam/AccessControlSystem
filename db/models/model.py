@@ -5,9 +5,10 @@ class Model:
 	def __init__(self, name, dblink):
 		self.db = dblink
 		self.name = name
-		self.cursor = dblink.cursor()
+		self.cursor = dblink.cursor(buffered=True)
 
 	def sql(self, sql):
+		print(sql)
 		self.cursor.execute(sql)
 
 	def fetchone(self):
@@ -29,8 +30,10 @@ class Model:
 
 	def INSERT(self, VALUES : tuple):
 		sql = "INSERT INTO " + self.name + " VALUES " + str(VALUES)
+		
 		self.sql(sql)
 		self.commit()
+		return self.SELECT("*", "ORDER BY id DESC LIMIT 1")
 
 	def UPDATE(self, FIELDS : dict, ADDITIONAL=""):
 		sql = "UPDATE " + self.name + " SET"

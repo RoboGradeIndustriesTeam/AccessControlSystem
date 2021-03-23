@@ -18,6 +18,5 @@ class Role(Model):
 		self.roleColor = data[2]
 
 		self.isAdmin = data[3]
-		self.isOrg = data[4]
-		self.isSec = data[5]
+		self.isSec = data[4]
 		return self

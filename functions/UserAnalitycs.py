@@ -9,6 +9,10 @@ class UserAnalitycs:
 
     def fetch(self, mysqldb, userID):
         objects = db.models.object.Object(mysqldb).SELECT("*", f"WHERE userOrgID = {userID}", True)
+        
+        objects2 = db.models.objectsecs.ObjectSec(mysqldb).SELECT("*", f"WHERE userID = {userID}", True)
+        [objects.append(db.models.object.Object(mysqldb).SELECT("*", ADDITIONAL=f"WHERE id = {i[2]}")) for i in objects2 if i not in objects]
+        print(objects)
         self.objects = objects
         self.securityUsers = []
         self.nfcTags = []
@@ -22,7 +26,8 @@ class UserAnalitycs:
                 tmp = db.models.nfcaccs.NFCAcc(mysqldb).SELECT("*", f"WHERE orgID = {i[0]}", True)
                 self.nfcTags.extend(tmp)
                 nfcaccsinobject = len(tmp)
-                securityUsersLen += nfcaccsinobject
+                nfcAccs += nfcaccsinobject
+                
             objectsLen = len(objects)
             for i in objects:
                 tmp = db.models.objectsecs.ObjectSec(mysqldb).SELECT("*", f"WHERE objectID = {i[0]}", True)
@@ -34,4 +39,5 @@ class UserAnalitycs:
                 self.tasks.extend(tmp)
                 tasksinprojects = len(tmp)
                 tasksLen += tasksinprojects
+        #print([tasksLen, objectsLen, securityUsersLen, nfcAccs])
         return [tasksLen, objectsLen, securityUsersLen, nfcAccs]

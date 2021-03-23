@@ -8,24 +8,26 @@
             <p class="text-white mb-0">{{ user_role.roleName }}</p>
         </div>
         <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex justify-content-between"><span class="mb-0">Роль</span> <strong class="text-muted">{{ user_role.roleName }}</strong></li>
+            <li class="list-group-item d-flex justify-content-between"><span class="mb-0">Роль</span> <strong
+                    class="text-muted">{{ user_role.roleName }}</strong></li>
         </ul>
-        <div class="card-footer border-0 mt-0">		
+        {% if user_role.isOrg %}
+        <div class="card-footer border-0 mt-0">
             <div class="row">
                 <div class="col-lg-6">
                     <a href="nfc.html">
                         <button style="margin-bottom: 10px;" class="btn btn-primary btn-lg btn-block">
-                            <i class="fas fa-dot-circle"></i> NFC Метки							
+                            <i class="fas fa-dot-circle"></i> NFC Метки
                         </button>
                     </a>
                 </div>
                 <div class="col-lg-6">
                     <a href="users.html">
                         <button class="btn btn-primary btn-lg btn-block">
-                            <i class="fas fa-users"></i> Пользователи							
+                            <i class="fas fa-users"></i> Пользователи
                         </button>
                     </a>
-                    
+
                 </div>
             </div>
         </div>
@@ -33,76 +35,77 @@
 </div>
 </div>
 <div class="row">
-<div class="col-xl-4">
-    <div class="card">
-        <a href="connect.html">
-            <div class="card-body">
-                <div class="row m-b-30">
-                    <div class="col-md-5 col-xxl-12">
-                        <div class="new-arrival-product">
-                            <img class="img-fluid" src="./static/images/connect.png" alt="asdasd">
+    <div class="col-xl-4">
+        <div class="card">
+            <a href="connect.html">
+                <div class="card-body">
+                    <div class="row m-b-30">
+                        <div class="col-md-5 col-xxl-12">
+                            <div class="new-arrival-product">
+                                <img class="img-fluid" src="./static/images/connect.png" alt="asdasd">
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-7 col-xxl-12">
-                        <div class="new-arrival-content position-relative">
-                            <h4>Подключение ЧОП</h4>
-                            <p class="price">2500руб.</p>
-                            <p>Доступность: <span class="item"> Доступно <i
-                                        class="fa fa-check-circle text-success"></i></span></p>
-                            <p class="text-content">Подключение вашего охраного предприятия к системе.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </a>
-    </div>
-</div>
-<div class="col">
-    <div class="card">
-        <a href="obsl.html">
-            <div class="card-body">
-                <div class="row m-b-30">
-                    <div class="col-md-5 col-xxl-12">
-                        <div class="new-arrival-product">
-                            <img class="img-fluid" src="./static/images/obsl.png" alt="">
-                        </div>
-                    </div>
-                    <div class="col-md-7 col-xxl-12">
-                        <div class="new-arrival-content position-relative">
-                            <h4>Обслкживание</h4>
-                            <p class="price">500руб/мес.</p>
-                            <p class="text-content">Обслуживание вашего ЧОП в нашей системе.</p>
+                        <div class="col-md-7 col-xxl-12">
+                            <div class="new-arrival-content position-relative">
+                                <h4>Подключение ЧОП</h4>
+                                <p class="price">2500руб.</p>
+                                <p>Доступность: <span class="item"> Доступно <i
+                                            class="fa fa-check-circle text-success"></i></span></p>
+                                <p class="text-content">Подключение вашего охраного предприятия к системе.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </a>
+            </a>
+        </div>
     </div>
-</div>
-<div class="col">
-    <div class="card">
-        <a href="buy_cards.html">
-            <div class="card-body">
-                <div class="row m-b-30">
-                    <div class="col-md-5 col-xxl-12">
-                        <div class="new-arrival-product">
-                            <img class="img-fluid" src="./static/images/nfccard.png" alt="">
+    <div class="col">
+        <div class="card">
+            <a href="obsl.html">
+                <div class="card-body">
+                    <div class="row m-b-30">
+                        <div class="col-md-5 col-xxl-12">
+                            <div class="new-arrival-product">
+                                <img class="img-fluid" src="./static/images/obsl.png" alt="">
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-7 col-xxl-12">
-                        <div class="new-arrival-content position-relative">
-                            <h4>Заказ меток</h4>
-                            <p class="price">100руб/10шт.</p>
-                            <p>Доступность: <span class="item"> Доступно <i
-                                        class="fa fa-check-circle text-success"></i></span></p>
-                            <p class="text-content">Метки для сканирования охраником на объекте.</p>
+                        <div class="col-md-7 col-xxl-12">
+                            <div class="new-arrival-content position-relative">
+                                <h4>Обслкживание</h4>
+                                <p class="price">500руб/мес.</p>
+                                <p class="text-content">Обслуживание вашего ЧОП в нашей системе.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </a>
+            </a>
+        </div>
     </div>
-</div>
+    <div class="col">
+        <div class="card">
+            <a href="buy_cards.html">
+                <div class="card-body">
+                    <div class="row m-b-30">
+                        <div class="col-md-5 col-xxl-12">
+                            <div class="new-arrival-product">
+                                <img class="img-fluid" src="./static/images/nfccard.png" alt="">
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-xxl-12">
+                            <div class="new-arrival-content position-relative">
+                                <h4>Заказ меток</h4>
+                                <p class="price">100руб/10шт.</p>
+                                <p>Доступность: <span class="item"> Доступно <i
+                                            class="fa fa-check-circle text-success"></i></span></p>
+                                <p class="text-content">Метки для сканирования охраником на объекте.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+    {% endif %}
 </div>
 
 </div>

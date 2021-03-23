@@ -90,7 +90,7 @@ def crBypass():
             nfcss = ""
             for i in nfcs:
                 nfcss += i + ","
-            if Task(mysqldb).SELECT("*", f"WHERE taskName = {name}") == None:
+            if Task(mysqldb).SELECT("*", f"WHERE taskName = \"{name}\"") == None:
                 Task(mysqldb).INSERT(f"(NULL, {objID}, {user.id}, {sec}, \"{name}\", \"{date}\", \"{nfcss}\")")
     else:
         if flask.request.method == "POST":
@@ -132,10 +132,10 @@ def user():
             ftyp = flask.request.form.get("form-type")
 
             if ftyp == "addUser":
-                if (flask.request.form.get("user_name"),) in User(mysqldb).SELECT("login", oneOrAll=True):
-                    tmp = User(mysqldb).SELECT('id', f"WHERE login = \"{flask.request.form.get('user_name')}\"")
-                    if ObjectSec(mysqldb).SELECT("*", f"WHERE userID = {tmp[0]}") == None:
-                        ObjectSec(mysqldb).INSERT(f"(NULL, {tmp[0]}, {int(flask.request.form.get('obj'))})")
+                if (flask.request.form.get("user_name"),) not in User(mysqldb).SELECT("login", oneOrAll=True):
+                    tmp = User(mysqldb).INSERT(f'(NULL, \"{flask.request.form.get("user_name")}\", \"{flask.request.form.get("user_pass")}\", \"\")')
+                    ObjectSec(mysqldb).INSERT(f"(NULL, {tmp[0]}, {int(flask.request.form.get('obj'))})")
+                    RoleAssign(mysqldb).INSERT(f"(NULL, 2, {tmp[0]})")
                 
     else:
         if flask.request.method == "POST":
@@ -204,7 +204,7 @@ def nfc():
         userAnalitycs = tmp.fetch(mysqldb, user.id)
         
         if flask.request.method == "POST" and flask.request.form.get("form-type") == "addNFC":
-            if NFCAcc(mysqldb).SELECT("*", f"WHERE data = {flask.request.form.get('data')}") == None:
+            if NFCAcc(mysqldb).SELECT("*", f"WHERE nfcID = {flask.request.form.get('data')}") == None:
                 NFCAcc(mysqldb).INSERT(f"(NULL, {flask.request.form.get('data')}, {flask.request.form.get('obj')} )")
     else:
         if flask.request.method == "POST":
@@ -267,18 +267,17 @@ def manage_chop():
         user = None
         user_role = None
         userAnalitycs = [0, 0, 0, 0]    
-    return flask.render_template('manage_chop.html', user=user, user_role=user_role, userAnalitycs=userAnalitycs, objects=tmp.objects)
-
+    return flask.render_template('manage_chop.html', user=user, user_role=user_role, userAnalitycs=userAnalitycs, objects=Object(mysqldb).SELECT(oneOrAll=True))
 
 def getUserRole(userID):
     mysqldb.reconnect()
     try:
-        tmp = RoleAssign(mysqldb)
-        roleID = tmp.SELECT("*", f"WHERE userID = {userID}")
+        roleID = RoleAssign(mysqldb).SELECT("*", f"WHERE userID = {userID}")
+        print(roleID)
         user_role = Role(mysqldb)
         user_role.fetchBy(user_role.SELECT("*", f"WHERE id = {roleID[1]}"))
         return user_role
-    except TypeError:
+    except Exception:
         print(traceback.format_exc())
         return None
 

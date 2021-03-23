@@ -1,68 +1,69 @@
 {% extends 'base.html' %}
 {% block title %} Управление ЧОП {% endblock %}
 {% block content %}
-<div class="row">
-    <div class="col">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">Управление ЧОПами</h4>
-                <button type="button" class="btn btn-rounded btn-info" data-toggle="modal" data-target="#addChop"><span class="btn-icon-left text-info"><i class="fa fa-plus color-info"></i>
+<div class="col">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Управление ЧОПами</h4>
+            <button type="button" class="btn btn-rounded btn-info" data-toggle="modal" data-target="#addChop"><span
+                    class="btn-icon-left text-info"><i class="fa fa-plus color-info"></i>
                 </span>Новое ЧОП</button>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table id="example5" class="display mb-4 dataTablesCard" style="min-width: 845px;">
-                        <thead>
-                            <tr>
-                                <th>Номер предприятия</th>
-                                <th>Название</th>
-                                <th>Владелец</th>
-                                <th>Адрес</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for i in objects %}
-                            <tr>
-                                <td>{{ i[0] }}</td>
-                                <td>{{ i[2] }}</td>
-                                <td>{{ GetUserByID(i[1])[1] }}</td>
-                                <td>{{ i[3] }}</td>                                     
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="example5" class="display mb-4 dataTablesCard" style="min-width: 845px;">
+                    <thead>
+                        <tr>
+                            <th>Номер предприятия</th>
+                            <th>Название</th>
+                            <th>Владелец</th>
+                            <th>Адрес</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in objects %}
+                        <tr>
+                            <td>{{ i[0] }}</td>
+                            <td>{{ i[2] }}</td>
+                            <td>{{ GetUserByID(i[1])[1] }}</td>
+                            <td>{{ i[3] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
-            <!-- Modal -->
-        <div class="modal fade" id="addChop">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <form  onsubmit="this.submit();return false;" method="POST">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Настройки ЧОП</h5>
-                            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="basic-form">
-                                <div class="form-group">
-                                    <label>Название ЧОП</label>
-                                    <input name="name" type="text" class="form-control input-default " placeholder="Название ЧОП">
-                                </div>
-                            </div>
-                            <div class="basic-form">
-                                <div class="form-group">
-                                    <label>Адрес</label>
-                                    <input name="address" type="text" class="form-control input-default " placeholder="Адрес">
-                                </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="addChop">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form onsubmit="this.submit();return false;" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Настройки ЧОП</h5>
+                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="basic-form">
+                            <div class="form-group">
+                                <label>Название ЧОП</label>
+                                <input name="name" type="text" class="form-control input-default "
+                                    placeholder="Название ЧОП">
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-danger light" data-dismiss="modal">Закрыть</button>
-                            <input type="submit" class="btn btn-primary"></button>
+                        <div class="basic-form">
+                            <div class="form-group">
+                                <label>Адрес</label>
+                                <input name="address" type="text" class="form-control input-default "
+                                    placeholder="Адрес">
+                            </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger light" data-dismiss="modal">Закрыть</button>
+                        <input type="submit" class="btn btn-primary"></button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
