@@ -282,6 +282,13 @@ def getUserRole(userID):
         print(traceback.format_exc())
         return None
 
+@app.route('/logout')
+@app.route('/logout.html')
+def logout():
+    res = flask.redirect('/')
+    res.set_cookie(key='token', value='', expires=0)
+    return res
+
 def GetUserByID(uid):
     return User(mysqldb).SELECT("*", f"WHERE id = {uid}")
 
