@@ -14,6 +14,7 @@ from db.models.task import *
 from db.models.logs import *
 from time import gmtime, strftime
 from functions.UserAnalitycs import UserAnalitycs
+import traceback
 
 
 dotenv.load_dotenv()
@@ -123,8 +124,10 @@ def user():
             res.set_cookie('token', '', expires=0)
             return res
         tmp2 = UserAnalitycs()
-        users = tmp2.securityUsers
+        users = []
         userAnalitycs = tmp2.fetch(mysqldb, user.id)
+        for i in tmp2.securityUsers:
+            users.append(User(mysqldb).SELECT("*", f"WHERE id = {i[1]}"))
         if flask.request.method == "POST":
             ftyp = flask.request.form.get("form-type")
 
@@ -272,10 +275,12 @@ def getUserRole(userID):
     try:
         tmp = RoleAssign(mysqldb)
         roleID = tmp.SELECT("*", f"WHERE userID = {userID}")
+        print(roleID)
         user_role = Role(mysqldb)
         user_role.fetchBy(user_role.SELECT("*", f"WHERE id = {roleID[1]}"))
         return user_role
     except TypeError:
+        print(traceback.format_exc())
         return None
 
 def GetUserByID(uid):
