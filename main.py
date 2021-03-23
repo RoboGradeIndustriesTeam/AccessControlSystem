@@ -275,7 +275,6 @@ def getUserRole(userID):
     try:
         tmp = RoleAssign(mysqldb)
         roleID = tmp.SELECT("*", f"WHERE userID = {userID}")
-        print(roleID)
         user_role = Role(mysqldb)
         user_role.fetchBy(user_role.SELECT("*", f"WHERE id = {roleID[1]}"))
         return user_role

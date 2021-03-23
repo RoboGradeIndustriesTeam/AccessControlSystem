@@ -8,7 +8,6 @@ class Model:
 		self.cursor = dblink.cursor()
 
 	def sql(self, sql):
-		print(sql)
 		self.cursor.execute(sql)
 
 	def fetchone(self):
