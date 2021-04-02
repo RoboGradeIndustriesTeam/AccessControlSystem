@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{% block title %}{% endblock %} | КАТРАН</title>
+    <!-- Favicon icon -->
+
+    <!-- Datatable -->
+    <link href="./static/vendor/datatables/css/jquery.dataTables.min.css" rel="stylesheet">
+    <!-- Custom Stylesheet -->
+    <link href="./static/vendor/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet">
+    <link href="./static/css/style.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/672e8de7e1.js" crossorigin="anonymous"></script>
+
+
+</head>
+
+<body>
+
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="sk-three-bounce">
+            <div class="sk-child sk-bounce1"></div>
+            <div class="sk-child sk-bounce2"></div>
+            <div class="sk-child sk-bounce3"></div>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <div class="nav-header">
+            <div class="nav-control">
+                <div class="hamburger">
+                    <span class="line"></span><span class="line"></span><span class="line"></span>
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+		
+        <!--**********************************
+            Header start
+        ***********************************-->
+        <div class="header">
+            <div class="header-content">
+                <nav class="navbar navbar-expand">
+                    <div class="collapse navbar-collapse justify-content-between">
+                        <div class="header-left">
+                            
+                        </div>
+
+                        <ul class="navbar-nav header-right">
+							<li class="nav-item dropdown notification_dropdown">
+                                <a class="nav-link dz-fullscreen primary" href="#">
+									<svg id="Capa_1" enable-background="new 0 0 482.239 482.239" height="22" viewBox="0 0 482.239 482.239" width="22" xmlns="http://www.w3.org/2000/svg"><path d="m0 17.223v120.56h34.446v-103.337h103.337v-34.446h-120.56c-9.52 0-17.223 7.703-17.223 17.223z" fill=""/><path d="m465.016 0h-120.56v34.446h103.337v103.337h34.446v-120.56c0-9.52-7.703-17.223-17.223-17.223z" fill=""/><path d="m447.793 447.793h-103.337v34.446h120.56c9.52 0 17.223-7.703 17.223-17.223v-120.56h-34.446z" fill="" /><path d="m34.446 344.456h-34.446v120.56c0 9.52 7.703 17.223 17.223 17.223h120.56v-34.446h-103.337z" fill=""/></svg>
+                                </a>
+							</li>
+							
+                            <li class="nav-item dropdown header-profile">
+                                <a class="nav-link" href="#" role="button" data-toggle="dropdown">
+									<div class="header-info">
+                                        {% if user != None %}
+										<span>Привет, <strong>{{ user.login }}</strong></span>
+                                        {% else %}
+                                        <span>Привет, <strong>Гость</strong></span>
+                                        {% endif %}
+									</div>
+                                    <img src="../static/images/Sample_User_Icon.png" width="20" alt="" data-pagespeed-url-hash="3874330073" onload="pagespeed.CriticalImages.checkImageForCriticality(this);">
+                                </a>
+                                {% if user != None %}
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a href="./logout.html" class="dropdown-item ai-icon">
+                                        <svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" class="text-danger" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                                        <span class="ml-2">Выйти </span>
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+        <div class="deznav">
+            <div class="deznav-scroll">
+				<ul class="metismenu" id="menu">
+                    <li><a class="ai-icon" href="index.html" aria-expanded="false">
+							<i class="fas fa-table"></i>
+							<span class="nav-text">Главная</span>
+						</a>
+                    </li>
+                    {% if user_role.isSec or not user_role.isAdmin and not user_role.isSec %}
+                    <li><a class="ai-icon" href="detours.html" aria-expanded="false">
+							<i class="fas fa-circle-notch"></i>
+							<span class="nav-text">Обходы</span>
+						</a>
+                    </li>
+                    {% endif %}
+                    {% if not user_role.isSec or user_role.isAdmin %}
+                    <li><a class="ai-icon" href="users.html" aria-expanded="false">
+							<i class="fas fa-users"></i>
+							<span class="nav-text">Пользователи</span>
+						</a>
+                    </li>
+                    <li><a class="ai-icon" href="object.html" aria-expanded="false">
+							<i class="fas fa-city"></i>
+							<span class="nav-text">Объекты</span>
+						</a>
+                    </li>
+                    <li><a class="ai-icon" href="nfc.html" aria-expanded="false">
+							<i class="fas fa-dot-circle"></i>
+							<span class="nav-text">NFC Метки</span>
+						</a>
+                    </li>
+                    {% endif %}
+                    {% if user_role.isAdmin %}
+                    <li><a class="has-arrow ai-icon" href="javascript:void()" aria-expanded="false">
+							<i class="fas fa-cog"></i>
+							<span class="nav-text">Настойки</span>
+						</a>
+                        <ul aria-expanded="false">
+                            <li><a href="./manage_chop.html">Управление ЧОПами</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+
+
+
+				<div class="copyright">
+					<p><strong>Панель администратора КАТРАН</strong><br> © R.G.I.T 2021</p>
+				</div>
+			</div>
+        </div>
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+            <div class="container-fluid">
+                <div class="row page-titles mx-0">
+                    <div class="col-sm-6 p-md-0">
+                        <div class="welcome-text">
+                            <h4>Привет, с возвращением!</h4>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 p-md-0 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                </div>
+                <!-- row -->
+
+                <div class="row">
+	                <div class="col-xl-3 col-lg-6 col-sm-6">
+						<div class="widget-stat card">
+							<div class="card-body p-4">
+								<div class="media ai-icon">
+									<span class="mr-3 bgl-primary text-primary">
+										<i class="fas fa-circle-notch"></i>
+									</span>
+									<div class="media-body">
+										<h3 class="mb-0 text-black">{{ userAnalitycs[0] }}</h3>
+										<p class="mb-0">Всего обходов</p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-xl-3 col-lg-6 col-sm-6">
+	                    <div class="widget-stat card ">
+							<div class="card-body p-4">
+								<div class="media ai-icon">
+									<span class="mr-3 bgl-warning text-warning">
+										<i class="fas fa-city"></i>
+									</span>
+									<div class="media-body">
+										<h3 class="mb-0 text-black">{{ userAnalitycs[1] }}</h3>
+										<p class="mb-0">Объектов</p>
+									</div>
+								</div>
+							</div>
+						</div>
+	                </div>
+
+					<div class="col-xl-3 col-lg-6 col-sm-6">
+						<div class="widget-stat card bg-primary">
+							<div class="card-body p-4">
+								<div class="media">
+									<span class="mr-3">
+										<i class="flaticon-381-user-7"></i>
+									</span>
+									<div class="media-body text-white text-right">
+										<p class="mb-1">Охраников</p>
+										<h3 class="text-white">{{ userAnalitycs[2] }}</h3>
+									</div>
+								</div>
+							</div>
+						</div>	
+	                </div>
+
+	                <div class="col-xl-3 col-lg-6 col-sm-6">
+						<div class="widget-stat card bg-success">
+							<div class="card-body p-4">
+								<div class="media">
+									<span class="mr-3">
+										<i class="fas fa-dot-circle"></i>
+									</span>
+									<div class="media-body text-white text-right">
+										<p class="mb-1">NFC Меток</p>
+										<h3 class="text-white">{{ userAnalitycs[3] }}</h3>
+									</div>
+								</div>
+							</div>
+						</div>
+                    </div>
+	            </div>
+
+                <div class="row">
+                    {% if user == None %}
+					<div class="col">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Вход</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="basic-form">
+                                    <form onsubmit="this.submit();return false;" class="form-valide-with-icon" method="post">
+                                        <div class="form-group">
+                                            <label class="text-label">Логин</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                                                </div>
+                                                <input type="text" class="form-control" id="val-username1" name="login" placeholder="Введите логин..">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="text-label">Пароль</label>
+                                            <div class="input-group transparent-append">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                                                </div>
+                                                <input type="password" class="form-control" id="val-password1" name="pass" placeholder="Введите пароль..">
+                                                <div class="input-group-append show-pass">
+                                                    <span class="input-group-text"> <i class="fa fa-eye-slash"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn mr-2 btn-primary">Вход</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="row">
+                    <div class="col-xl-4">
+                        <div class="card">
+                            <a href="connect.html">
+                                <div class="card-body">
+                                    <div class="row m-b-30">
+                                        <div class="col-md-5 col-xxl-12">
+                                            <div class="new-arrival-product">
+                                                <img class="img-fluid" src="./static/images/connect.png" alt="asdasd">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 col-xxl-12">
+                                            <div class="new-arrival-content position-relative">
+                                                <h4>Подключение ЧОП</h4>
+                                                <p class="price">2500руб.</p>
+                                                <p>Доступность: <span class="item"> Доступно <i
+                                                            class="fa fa-check-circle text-success"></i></span></p>
+                                                <p class="text-content">Подключение вашего охраного предприятия к системе.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <a href="obsl.html">
+                                <div class="card-body">
+                                    <div class="row m-b-30">
+                                        <div class="col-md-5 col-xxl-12">
+                                            <div class="new-arrival-product">
+                                                <img class="img-fluid" src="./static/images/obsl.png" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 col-xxl-12">
+                                            <div class="new-arrival-content position-relative">
+                                                <h4>Обслкживание</h4>
+                                                <p class="price">500руб/мес.</p>
+                                                <p class="text-content">Обслуживание вашего ЧОП в нашей системе.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="card">
+                            <a href="buy_cards.html">
+                                <div class="card-body">
+                                    <div class="row m-b-30">
+                                        <div class="col-md-5 col-xxl-12">
+                                            <div class="new-arrival-product">
+                                                <img class="img-fluid" src="./static/images/nfccard.png" alt="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7 col-xxl-12">
+                                            <div class="new-arrival-content position-relative">
+                                                <h4>Заказ меток</h4>
+                                                <p class="price">100руб/10шт.</p>
+                                                <p>Доступность: <span class="item"> Доступно <i
+                                                            class="fa fa-check-circle text-success"></i></span></p>
+                                                <p class="text-content">Метки для сканирования охраником на объекте.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    </div>
+                           
+            </div>  
+            {% else %}
+            {% block content %}{% endblock %}
+            {% endif %}      
+        <!--**********************************
+            Content body end
+        ***********************************-->
+        </div>
+        <!--**********************************
+           Support ticket button start
+        ***********************************-->
+
+        <!--**********************************
+           Support ticket button end
+        ***********************************-->
+
+        
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <!-- Required vendors -->
+    <script src="./static/vendor/global/global.min.js"></script>
+	<script src="./static/vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+    <script src="./static/js/custom.min.js"></script>
+	<script src="./static/js/deznav-init.js"></script>
+	
+    <!-- Datatable -->
+    <script src="./static/vendor/datatables/js/jquery.dataTables.min.js"></script>
+    <script src="./static/js/plugins-init/datatables.init.js"></script>
+
+    <!-- Required vendors -->
+    <script src="./static/vendor/chart.js/Chart.bundle.min.js"></script>
+	<!-- Apex Chart -->
+	<script src="./static/vendor/apexchart/apexchart.js"></script>
+
+    <script src="./static/vendor/highlightjs/highlight.pack.min.js"></script>
+    <!-- Circle progress -->
+
+</body>
+</html>

@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block title %} Обходы {% endblock %}
+{% block content %}
+
+<div class="col">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Обходы</h4>
+            {% if user_role.isAdmin or not user_role.isSec %}
+            <button type="button" class="btn btn-rounded btn-info" data-toggle="modal" data-target="#addDet"><span
+                    class="btn-icon-left text-info"><i class="fa fa-plus color-info"></i>
+                </span>Новый обход</button>
+            {% endif %}
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="example5" class="display mb-4 dataTablesCard" style="min-width: 845px;">
+                    <thead>
+                        <tr>
+                            <th>Номер<br>обхода</th>
+                            <th>Название обхода</th>
+                            <th>Дата и время обхода</th>
+                            <th>NFC метки</th>
+                            <th>Охраник на обход</th>
+                            <th>ЧОП</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in tasks %}
+                        <tr>
+                            <td>{{ i[0] }}</td>
+                            <td>{{ i[4] }}</td>
+                            <td>{{ i[5] }}</td>
+                            <td>{{ i[6] }}</td>
+                            <td>{{ GetUserByID(i[2])[1] }}</td>
+                            <td>{{ GetObjByID(i[1])[2] }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="addDet">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <form method="POST" onsubmit="this.submit();return false;">
+                    <input type="hidden" name="form-type" value="addDet">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Настройки обхода</h5>
+                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="basic-form">
+                            <div class="form-group">
+                                <label>Название обхода</label>
+                                <input type="text" class="form-control input-default " name="name"
+                                    placeholder="Название обхода">
+                            </div>
+                            <div class="form-group">
+                                <p class="mb-1">Дата и время обхода</p>
+                                <input type="text" class="form-control input-daterange-timepicker" name="daterange"
+                                    value="">
+                            </div>
+                            <div class="form-group">
+                                <label>NFC метки обхода</label>
+                                <select style="height: 42px" class="multi-select" name="states" multiple="multiple">
+                                    {% for i in nfces %}
+                                    <option value="{{ i[0] }}">{{ i[1] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>ЧОП</label>
+                                <select name="obj" class="dropdown-groups">
+                                    {% for i in objects %}
+                                    <option value="{{ i[0] }}">{{ i[2] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Охраник на обход</label>
+                                <select name="sec" id="dynamic-option-creation">
+                                    {% for item in secs %}
+                                    <option value="{{item[1]}}">{{ GetUserByID(item[1])[1] }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger light" data-dismiss="modal">Закрыть</button>
+                        <input type="submit" class="btn btn-primary"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
