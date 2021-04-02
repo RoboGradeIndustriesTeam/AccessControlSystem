@@ -16,8 +16,8 @@
                             <tr>
                                 <th>Номер<br>пользователя</th>
                                 <th>Ф.И.О.</th>
+                                <th>Пароль</th>
                                 <th>Статус</th>
-                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -25,7 +25,9 @@
                             <tr>
                                 <td>{{ i[0] }}</td>
                                 <td>{{ i[1] }}</td>
-                                <td><span class="btn btn-sm light btn-success fs-16">{{ getUserRole(i[0]).roleName}}</span></td>                                  
+                                <td>{{ i[2] }}</td> 
+                                <td><span class="btn btn-sm light btn-success fs-16">{{ getUserRole(i[0]).roleName}}</span></td>     
+                                                            
                             </tr>
                             {% endfor %}
                         </tbody>
