@@ -91,7 +91,7 @@ def crBypass():
             for i in nfcs:
                 nfcss += i + ","
             if Task(mysqldb).SELECT("*", f"WHERE taskName = \"{name}\"") == None:
-                Task(mysqldb).INSERT(f"(NULL, {objID}, {user.id}, {sec}, \"{name}\", \"{date}\", \"{nfcss}\")")
+                Task(mysqldb).INSERT(f"(NULL, {objID}, {sec}, {user.id}, \"{name}\", \"{date}\", \"{nfcss}\")")
     else:
         if flask.request.method == "POST":
             user2 = cursor.fetchone()
@@ -154,6 +154,7 @@ def user():
         userAnalitycs = [0, 0, 0, 0]
         users = []
         objects = []
+        tmp2 = UserAnalitycs()
 
     return flask.render_template('users.html', user=user, user_role=user_role, userAnalitycs=userAnalitycs, users=users, objects=tmp2.objects)
 
@@ -186,6 +187,7 @@ def object():
         user = None
         user_role = None
         userAnalitycs = [0, 0, 0, 0]    
+        tmp = UserAnalitycs()
     return flask.render_template('object.html', user=user, user_role=user_role, userAnalitycs=userAnalitycs, objects=tmp.objects)
 
 @app.route('/nfc', methods=["GET", "POST"])
@@ -221,6 +223,7 @@ def nfc():
         user = None
         user_role = None
         userAnalitycs = [0, 0, 0, 0]    
+        tmp = UserAnalitycs()
     return flask.render_template('nfc.html', user=user, user_role=user_role, userAnalitycs=userAnalitycs, objects=tmp.objects, nfces=tmp.nfcTags)
 
 @app.route('/activate/<id>')
@@ -303,4 +306,4 @@ def GetSecsByObejct(uid):
 app.jinja_env.globals.update(len=len, User=User, Role=Role, RoleAssign=RoleAssign, NFCAcc=NFCAcc, Task=Task, Object=Object, ObjectSec=ObjectSec, mysqldb=mysqldb, getUserRole=getUserRole, GetUserByID=GetUserByID, GetObjByID=GetObjByID, GetNFCByObejct=GetNFCByObejct, GetSecsByObejct=GetSecsByObejct)
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=80, debug=True)
+    app.run(host='0.0.0.0', port=60, debug=True)
